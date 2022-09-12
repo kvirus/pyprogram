@@ -15,9 +15,9 @@ from playsound import playsound
 
 
 def open_f():
-    folder = open_in.get()
+    folder = open_docs.name
     print(folder)
-    file = open(filename,'r')
+    file = open(folder,'r')
     file_line=file.readlines()
     t1 = gtts.gTTS("Welcome to javaTpoint")
     for i in file_line:
@@ -39,23 +39,38 @@ def play():
     engine.say(text)
     engine.runAndWait()
 
+def safe_txt():
+    t0=textbox.get("1.0",END)
+    t1 = gtts.gTTS(t0)
+    dst = fd.asksaveasfile()
+    print(dst.name)
+    t1.save(dst.name)
+
+def open_doc():
+    global open_docs
+    open_docs = fd.askopenfile()
+    print(open_docs.name)
 
 window = Tk()
 window.title("Открытие текстового документа и поместить его в окно")
 window.geometry('600x550')
 
-open_lbl = Label(window, text="Открыть документ")
+open_lbl = Label(window, text="\u2600 Открыть документ")
 open_lbl.grid(column=0, row=0)
-open_in = Entry(window, width=30)
-open_in.grid(column=0, row=1)
-open_btn = Button(window, text="Перенести в окно", command=open_f)
-open_btn.grid(column=0, row=8)
+open_btn_2 = Button(window, text='\u2601 Путь к файлу', command=open_doc)
+open_btn_2.grid(column=1, row=0)
+#open_in = Entry(window, width=30)
+#open_in.grid(column=0, row=1)
+open_btn = Button(window, text="\u2605 Перенести в окно", command=open_f)
+open_btn.grid(column=2, row=0)
 open_btn_2 = Button(window, text="открыть документ", command=open_file)
 open_btn_2.grid(column=0, row=7)
-open_btn_2 = Button(window, text="Проиграть текст", command=play)
-open_btn_2.grid(column=0, row=9)
+open_btn_2 = Button(window, text="\u2623 Проиграть текст в окне", command=play)
+open_btn_2.grid(column=3, row=0)
+open_btn_2 = Button(window, text="\u2622 Сохранить текст как mp3", command=safe_txt)
+open_btn_2.grid(column=1, row=7)
 
-textbox = scrolledtext.ScrolledText(window, width=50, height=10)
-textbox.grid(column=0, row=2, columnspan = 2)
+textbox = scrolledtext.ScrolledText(window, width=60, height=10)
+textbox.grid(column=0, row=2, columnspan = 5)
 
 window.mainloop()
