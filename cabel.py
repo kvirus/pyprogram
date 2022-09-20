@@ -13,6 +13,6 @@ def find_closese_sum(numbers, targets):
         numbers = list(set(numbers).difference(bestcomb))
         print("Target: {},  combination: {}".format(t, bestcomb))
 
-targets = [14,27.,39]
-numbers = [1.0,5,5,10,7,8,11,13,66,34]
+targets = [14,16,17]
+numbers = [5,2,5,2,2,5,2,5,16]
 find_closese_sum(numbers, targets)
