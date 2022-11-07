@@ -33,7 +33,7 @@ def del_ban(ip):
 
 def remove_def(ip):
     try:
-        client.connect(hostname='192.168.1.34', port=2231, username="bka", password="Jackal.85mm!", look_for_keys=False,
+        client.connect(hostname='192.168.1.34', port=2231, username="bka", password="Jack", look_for_keys=False,
                        allow_agent=False)
         _stdin, _stdout, _stderr = client.exec_command(
             'ip firewall address-list print where list="Blocked bruteforcers"')
