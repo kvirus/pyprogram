@@ -7,6 +7,8 @@ from tkinter import scrolledtext
 #подключение к БД и использование базы данных
 conn = pyodbc.connect('DRIVER={SQL Server};SERVER=127.0.0.1;DATABASE=master;UID=sa;PWD=Z', autocommit=True)
 cursor = conn.cursor()
+cursor1 = conn.cursor()
+cursor2 = conn.cursor()
 cursor.execute('USE test')
 #cursor.execute('CREATE TABLE phones (id int IDENTITY, name varchar(20), last varchar (20), phone BIGINT)')
 
@@ -25,10 +27,25 @@ def add_phone():
 
 def search_f():
     x = search_in.get()
-    cursor.execute('SELECT * FROM phones WHERE  (* = ?)', x)
-    out = cursor.fetchone()
+    out_list =('name','last','phone')
+    #for i in out_list:
+    #print(out_list)
+    cursor.execute('SELECT * FROM phones WHERE  (name = ?)',x)
+    out = cursor.fetchall()
+    search_out.insert(INSERT, out)
+    search_out.insert(INSERT, '\n')
     print(out)
-   #search_out.insert(INSERT, out)
+    cursor.execute('SELECT * FROM phones WHERE  (last = ?)', x)
+    out = cursor.fetchall()
+    search_out.insert(INSERT, out)
+    search_out.insert(INSERT, '\n')
+    print(out)
+    cursor.execute('SELECT * FROM phones WHERE  (phone = ?)', x)
+    out = cursor.fetchall()
+    search_out.insert(INSERT, out)
+    search_out.insert(INSERT, '\n')
+    b=out[1]
+    print(b[1])
     #d=0
     # for i in result:
     #     if d==0:
@@ -70,7 +87,7 @@ search_btn = Button(window, text="Поиск", command=search_f)
 search_btn.grid(column=2, row=4)
 
 #Вывод поиска
-search_out = scrolledtext.ScrolledText(window, width=100, height=20, font = ("Calibri", 8))
+search_out = scrolledtext.ScrolledText(window, width=100, height=20, font = ("Calibri", 12))
 search_out.grid(row=5,column=0,columnspan=7)
 
 
