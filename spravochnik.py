@@ -5,7 +5,7 @@ from tkinter import messagebox
 from tkinter import scrolledtext
 
 #подключение к БД и использование базы данных
-conn = pyodbc.connect('DRIVER={SQL Server};SERVER=127.0.0.1;DATABASE=master;UID=sa;PWD=Z', autocommit=True)
+conn = pyodbc.connect('DRIVER={SQL Server};SERVER=127.0.0.1;DATABASE=master;UID=sa;PWD=Zireael', autocommit=True)
 cursor = conn.cursor()
 cursor1 = conn.cursor()
 cursor2 = conn.cursor()
@@ -16,7 +16,7 @@ def del_table():
     cursor.execute('DROP TABLE phones')
 
 def create_table():
-    cursor.execute('CREATE TABLE phones (id int IDENTITY, name varchar(20), last varchar (20), phone BIGINT)')
+    cursor.execute('CREATE TABLE phones (id int IDENTITY, name varchar(20), last varchar (20), phone varchar (20))')
 
 def add_phone():
     a= name_in.get()
@@ -32,20 +32,37 @@ def search_f():
     #print(out_list)
     cursor.execute('SELECT * FROM phones WHERE  (name = ?)',x)
     out = cursor.fetchall()
+    leg_ht=len(out)
+    print(leg_ht)
+    x1=0
+    # wile x1<leg_ht:
+    #     f=1
+    #         wile f<=3:
+    #             print(b[f])
+    #             f=f+1
+    #     b = out[x1]
+    #     print(b[x1]
+    #     x1=x1+1
     search_out.insert(INSERT, out)
     search_out.insert(INSERT, '\n')
-    print(out)
+    print(len(out))
+    print(b[1])
+    #print(out)
     cursor.execute('SELECT * FROM phones WHERE  (last = ?)', x)
     out = cursor.fetchall()
     search_out.insert(INSERT, out)
     search_out.insert(INSERT, '\n')
-    print(out)
+    print(len(out))
+    b = out[0]
+    print(b[2])
+    #print(out)
     cursor.execute('SELECT * FROM phones WHERE  (phone = ?)', x)
     out = cursor.fetchall()
     search_out.insert(INSERT, out)
     search_out.insert(INSERT, '\n')
-    b=out[1]
-    print(b[1])
+    print(len(out))
+    # b = out[0]
+    # print(b[3])
     #d=0
     # for i in result:
     #     if d==0:
