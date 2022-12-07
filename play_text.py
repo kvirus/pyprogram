@@ -2,9 +2,9 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import scrolledtext
 from tkinter import filedialog as fd
-import gtts
-import pyttsx3
-from playsound import playsound
+#import gtts
+#import pyttsx3
+#from playsound import playsound
 
 #engine = pyttsx3.init()
 #text=''
