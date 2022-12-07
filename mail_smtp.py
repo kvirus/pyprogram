@@ -1,5 +1,4 @@
 ##Обернуть в try с выдачей ошибки, разобраться с языком
-# -*- coding: utf8 -*-
 import subprocess
 from subprocess import PIPE, run
 import os
@@ -8,6 +7,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import scrolledtext
 import requests
+import python_weather
 
 # site=input("Введите адрес для проверки")
 # result = run(["ping", site], stdout=PIPE, stderr=PIPE, universal_newlines=True)
@@ -72,6 +72,14 @@ def request():
     output.insert(INSERT,user_timezone)
     output.insert(INSERT, '\n')
 
+def weather():
+    BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
+    CITY = "Rostov"
+    API_KEY = "9d075ab04124d2af84c606a28995e976"
+    URL = BASE_URL + "q=" + CITY + "&appid=" + API_KEY
+    #response = requests.get(URL)
+    print(URL)
+
 window = Tk()
 window.title("Проверка пинга сайта")
 window.geometry('700x750')
@@ -81,12 +89,18 @@ adress = Label(window, text="Введите адрес для проверки:"
 adress.grid(column=0, row=2)
 adress_enter = Entry(window, width=30)
 adress_enter.grid(column=1, row=2)
+adress_w = Label(window, text="Введите город:", font=("Arial", 10))
+adress_w.grid(column=0, row=3)
+adress_w_enter = Entry(window, width=30)
+adress_w_enter.grid(column=1, row=3)
 btn_out = Button(window, text="Проверка ресурса", command=clicked)
 btn_out.grid(column=3, row=2)
 btn_out = Button(window, text= 'Трассировка', command=tracert)
 btn_out.grid(column=4, row=2)
 btn_out = Button(window, text= 'Инфо о IP', command=request)
 btn_out.grid(column=3, row=3)
+btn_out = Button(window, text= 'Погода', command=weather)
+btn_out.grid(column=4, row=3)
 output = scrolledtext.ScrolledText(window, width=100, height=20, font = ("Calibri", 8)) # Окно с удаление
 output.grid(row=4,column=0,columnspan=5)
 
