@@ -1,12 +1,28 @@
 import os
+import sys
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox as mb
 from tkinter import scrolledtext
 from tkinter import filedialog
 
 
 
 def install():
+    isDirectory = os.path.isfile(filepath_sc)
+    if isDirectory==False:
+        mb.showinfo("Информация","Не файла со скриптом")
+        return
+    isFile = os.path.isfile(filepath)
+    if isDirectory==False:
+        mb.showinfo("Информация","Не введен путь к скрипту")
+        return
+    if len(login.get())==0:
+        mb.showinfo("Информация", "Не введен Логин")
+        return
+    if len(passwd.get())==0:
+        mb.showinfo("Информация", "Не введен Пароль")
+        return
+    print(isDirectory)
     name = open(filepath, 'r')
     print(name)
     #print(name)
@@ -31,13 +47,18 @@ def open_scr():
     filepath_sc = filedialog.askopenfilename()
     print(filepath_sc)
 
-def open_pst():
+def open_pst(): #Дописать путь к PSTools
     False
 
 
 window = Tk()
 window.title("Разливание платформы 1С")
 window.geometry('600x550')
+global filepath
+filepath=0
+global filepath_sc
+filepath_sc=0
+
 lbl_prog = Label(window, text="\u2600 Программа устанавливает платформу прописанную в \\\it15\\tmp\install.cmd")
 lbl_prog.grid(column=0, row=0, columnspan=2)
 # lbl_prog1 = Label(window, text="\u2600 Название ПК берется из C:\Intel\\name.txt")
