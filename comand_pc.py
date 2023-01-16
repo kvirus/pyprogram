@@ -22,20 +22,24 @@ def install():
     if len(passwd.get())==0:
         mb.showinfo("Информация", "Не введен Пароль")
         return
-    print(isDirectory)
+    #print(isDirectory)
     name = open(filepath, 'r')
-    print(name)
+    #print(name)
     #print(name)
     passwdd = passwd.get()
     login_l = login.get()
     filepath_scp = filepath_sc
+    scrs=filepath_scp.replace('/', "\\") #Заменяем слеши
+    print(scrs)
     while True:
         line = name.readline()
         if not line:
             break
-        command3 = ("cd c:\PSTools & PsExec \\\{} -u {} -p {} -s {}".format(line.strip(),login_l, passwdd,filepath_scp))
+        ##command3 = ("cd c://PSTools & PsExec \\\{} -u {} -p {} -s {}".format(line.strip(),login_l, passwdd,filepath_sc))
+        #command3 = ("cd c:\PSTools & PsExec \\\{} -u {} -p {} -s \\\it15\\tmp\\uninstall1.cmd".format(line.strip(),login_l, passwdd))
+        command3 = ("cd c:\PSTools & PsExec \\\{} -u {} -p {} -s {}".format(line.strip(), login_l,passwdd,scrs))
         print(command3)
-        #os.system(command3)
+        os.system(command3)
     name.close
 
 def open_f():
@@ -45,7 +49,7 @@ def open_f():
 def open_scr():
     global filepath_sc
     filepath_sc = filedialog.askopenfilename()
-    print(filepath_sc)
+    #print(filepath_sc)
 
 def open_pst(): #Дописать путь к PSTools
     False
@@ -59,7 +63,7 @@ filepath=0
 global filepath_sc
 filepath_sc=0
 
-lbl_prog = Label(window, text="\u2600 Программа устанавливает платформу прописанную в \\\it15\\tmp\install.cmd")
+lbl_prog = Label(window, text="\u2600 Программа устанавливает платформу прописанную в \\\it15\\tmp\install1.cmd")
 lbl_prog.grid(column=0, row=0, columnspan=2)
 # lbl_prog1 = Label(window, text="\u2600 Название ПК берется из C:\Intel\\name.txt")
 # lbl_prog1.grid(column=0, row=1)
