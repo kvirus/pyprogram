@@ -2,6 +2,8 @@ import telebot
 import os, wikipedia, re
 from telebot import types
 import paramiko
+client = paramiko.SSHClient()
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 #from ping3 import ping
 bot = telebot.TeleBot('5388668812:AAFiSusMexQ5fO9mkxpUjp20uje-qGJp4ws')
@@ -13,11 +15,13 @@ key_spisok_r = types.InlineKeyboardButton(text='Показать список', 
 key_spisok_del = types.InlineKeyboardButton(text='Удалить строчку из списка', callback_data='spisok_del')
 key_spisok_clear = types.InlineKeyboardButton(text='Очистить список', callback_data='spisok_clear')
 key_sql_open = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
+key_sql_close = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
 keyboard.add(key_start)
 keyboard.add(key_spisok_wr,key_spisok_r)
 keyboard.add(key_spisok_del)
 keyboard.add(key_spisok_clear)
 keyboard.add(key_sql_open)
+keyboard.add(key_sql_close)
 wikipedia.set_lang("ru")
 
 
@@ -124,11 +128,18 @@ def spisok_del(call):
 @bot.callback_query_handler(func=lambda call: call.data =='sql_open')
 def spisok_del(call):
     if call.data == "sql_open": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
-        client.connect(hostname='192.168.1.34', port=2231, username="bka", password="Jac", look_for_keys=False,
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password="Ja", look_for_keys=False,
                        allow_agent=False)
         _stdin, _stdout, _stderr = client.exec_command(
-            'ip firewall address-list print where list="Blocked bruteforcers"')
-    msg2 = bot.send_message(call.message.chat.id, 'отработано')
+            'ip firewall nat enable numbers=5')
+
+@bot.callback_query_handler(func=lambda call: call.data =='sql_close')
+def spisok_del(call):
+    if call.data == "sql_close": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password="Jac", look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command(
+            'ip firewall nat disable numbers=5')
 
 
 @bot.callback_query_handler(func=lambda call: call.data =='startt')
