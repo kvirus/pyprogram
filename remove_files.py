@@ -23,7 +23,8 @@ def clicked():
     #path = txt_path.get()
     file = open("c:/intel/1.txt", 'w')  # открываем файл
     for name in exe_input:
-        dir = dir_input + '\**\*' + name + "*.*" #собираем название файла с путем
+        #dir = dir_input + '\**\*' + name + "*.*" #собираем название файла с путем
+        dir = dir_input + '\**\*' + "*.tmp"  # собираем название файла с путем
         all = list(glob.glob(dir, recursive=True)) #рекурсивный поиск
         if len(all) == 0:
             messagebox.showinfo("GUI Python", "Ничего не найдено")
@@ -45,7 +46,8 @@ def clicked_del():
     #path = txt_path.get()
     #file = open("c:/intel/1.txt", 'w')  # открываем файл
     for name in exe_input:
-        dir = dir_input + '\**\*' + name + "*.*"  # собираем название файла с путем
+        #dir = dir_input + '\**\*' + name + "*.*"  # собираем название файла с путем
+        dir = dir_input + '\**\*' + "*.tmp"  # собираем название файла с путем
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
         for i in all:
             os.remove(i)

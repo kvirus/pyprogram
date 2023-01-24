@@ -37,7 +37,8 @@ def install():
             break
         ##command3 = ("cd c://PSTools & PsExec \\\{} -u {} -p {} -s {}".format(line.strip(),login_l, passwdd,filepath_sc))
         #command3 = ("cd c:\PSTools & PsExec \\\{} -u {} -p {} -s \\\it15\\tmp\\uninstall1.cmd".format(line.strip(),login_l, passwdd))
-        command3 = ("cd c:\PSTools & PsExec \\\{} -u {} -p {} -s {}".format(line.strip(), login_l,passwdd,scrs))
+        #command3 = ("cd c:\PSTools & PsExec \\\{} -u {} -p {} -s {}".format(line.strip(), login_l,passwdd,scrs))
+        command3 = ("cd {} & PsExec \\\{} -u {} -p {} -s {}".format(pst_r,line.strip(), login_l, passwdd, scrs))
         print(command3)
         os.system(command3)
     name.close
@@ -52,8 +53,9 @@ def open_scr():
     #print(filepath_sc)
 
 def open_pst(): #Дописать путь к PSTools
-    False
-
+    global pst_r
+    pst = filedialog.askdirectory()
+    pst_r = pst.replace('/', "\\")  # Заменяем слеши
 
 window = Tk()
 window.title("Разливание платформы 1С")
