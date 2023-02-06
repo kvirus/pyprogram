@@ -83,7 +83,7 @@ def getwiki(s):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Пока что бот умеет это:", reply_markup=keyboard)
+    bot.send_message(message.chat.id, "Что будем делать:", reply_markup=keyboard)
 
 
 @bot.message_handler(commands=['mikrotik'])

@@ -2,9 +2,31 @@ import telebot
 import os, wikipedia, re
 from telebot import types
 import paramiko
+#from aiogram.types import ReplyKeyboardRemove,ReplyKeyboardMarkup, KeyboardButton,InlineKeyboardMarkup, InlineKeyboardButton
+
+#!!!! Не забудь поменять пароли на скриптах!!!
+
+passwd = "Ja" #Пароль для скриптов!!!
+
+#Активация работы с SSH
+client = paramiko.SSHClient()
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 #from ping3 import ping
-bot = telebot.TeleBot('5800064216:AAFWd0BnsgM9MH94ppPZKU9plisU0L9K_2k')
+#bot = telebot.TeleBot('5388668812:AAFiSusMexQ5fO9mkxpUjp20uje-qGJp4ws') #Основной БОТ
+
+bot = telebot.TeleBot('5800064216:AAFWd0BnsgM9MH94ppPZKU9plisU0L9K_2k') #Запасной бот
+
+keyboard_up = types.InlineKeyboardMarkup()
+key_1c = types.InlineKeyboardButton(text='\U0001F609 Открыть/закрыть доступ в 1С \U0001F915', callback_data='1c_rule')
+keyboard_up.add(key_1c)
+
+keyboard_1c = types.InlineKeyboardMarkup()
+key_sql_open = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
+key_sql_close = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
+keyboard_1c.add(key_sql_open)
+keyboard_1c.add(key_sql_close)
+
 
 keyboard = types.InlineKeyboardMarkup()
 key_start = types.InlineKeyboardButton(text='\U0001F609 Википедия \U0001F915', callback_data='startt')
@@ -13,14 +35,32 @@ key_spisok_r = types.InlineKeyboardButton(text='Показать список', 
 key_spisok_del = types.InlineKeyboardButton(text='Удалить строчку из списка', callback_data='spisok_del')
 key_spisok_clear = types.InlineKeyboardButton(text='Очистить список', callback_data='spisok_clear')
 key_sql_open = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
-keyboard.add(key_start)
-keyboard.add(key_spisok_wr,key_spisok_r)
-keyboard.add(key_spisok_del)
-keyboard.add(key_spisok_clear)
+key_sql_close = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
+key_micr_open = types.InlineKeyboardButton(text='Открыть Микротик снаружи', callback_data='micr_open')
+key_micr_close = types.InlineKeyboardButton(text='Закрыть Микротик снаружи', callback_data='micr_close')
+
+#keyboard.add(key_start)
+#keyboard.add(key_spisok_wr,key_spisok_r)
+#keyboard.add(key_spisok_del)
+#keyboard.add(key_spisok_clear)
 keyboard.add(key_sql_open)
-wikipedia.set_lang("ru")
+keyboard.add(key_sql_close)
+keyboard.add(key_micr_open)
+keyboard.add(key_micr_close)
+#wikipedia.set_lang("ru")
+
+#Кнопки клавиатуры
+# button_hi = KeyboardButton('Привет! 👋')
+#
+# greet_kb = ReplyKeyboardMarkup()
+# greet_kb.add(button_hi)
 
 
+keyboard1 = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=False, one_time_keyboard=True)
+key_sql_open1 = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
+key_sql_close1 = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
+keyboard1.add(key_sql_open1)
+keyboard1.add(key_sql_close1)
 
 #Функция википедия
 def getwiki(s):
@@ -53,6 +93,17 @@ def getwiki(s):
         return 'В энциклопедии нет информации об этом'
 
 
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.send_message(message.chat.id, "Что будем делать:", reply_markup=keyboard_up)
+
+
+@bot.message_handler(commands=['mikrotik'])
+def start(message):
+    bot.send_message(message.chat.id, "Пока что бот умеет это:", reply_markup=keyboard1)
+
+
 @bot.message_handler(commands=["wiki"])
 def start(message):
     bot.send_message(message.chat.id, 'О чем рассказать?')
@@ -62,11 +113,11 @@ def info(message):
     print(message.text)
     bot.send_message(message.chat.id, getwiki(message.text))
 
-@bot.callback_query_handler(func=lambda call: call.data =='spisok_wr')
-def callback_worker1(call):
-    if call.data == "spisok_wr":
-        msg1 =bot.send_message(call.message.chat.id, 'Запись списка продуктов')
-        bot.register_next_step_handler(msg1, spisok_wr1)
+@bot.callback_query_handler(func=lambda call: call.data =='1c_rule')
+def spisok_del(call):
+    if call.data == "1c_rule":
+        bot.send_message(call.message.chat.id, "Что будем делать:", reply_markup=keyboard_1c)
+
 
 def spisok_wr1(message):
     file_sp_wr2 = open("c:/intel/1.txt", 'r')
@@ -85,6 +136,15 @@ def spisok_wr1(message):
     file_sp_wr1 = open("c:/intel/1.txt", 'a')
     file_sp_wr1.write(x1 + '. ' + wr + "\n")
     file_sp_wr1.close()
+
+@bot.callback_query_handler(func=lambda call: call.data =='sql_open')#ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "sql_open": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat enable numbers=5')
+    bot.send_message(call.message.chat.id, '1C доступ открыт')
+
 
 @bot.callback_query_handler(func=lambda call: call.data =='spisok_r')
 def callback_worker_r(call):
@@ -121,14 +181,45 @@ def spisok_del(call):
         open('c:/intel/1.txt', 'w').close()
     msg2 = bot.send_message(call.message.chat.id, 'Список очищен')
 
-@bot.callback_query_handler(func=lambda call: call.data =='sql_open')
+#Открываем правило SQL
+
+@bot.callback_query_handler(func=lambda call: call.data =='sql_open')#ПАРОЛЬ!!!!
 def spisok_del(call):
     if call.data == "sql_open": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
-        client.connect(hostname='192.168.1.34', port=2231, username="bka", password="Jac", look_for_keys=False,
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
                        allow_agent=False)
-        _stdin, _stdout, _stderr = client.exec_command(
-            'ip firewall address-list print where list="Blocked bruteforcers"')
-    msg2 = bot.send_message(call.message.chat.id, 'отработано')
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat enable numbers=5')
+    bot.send_message(call.message.chat.id, '1C доступ открыт')
+
+#Закрываем правило SQL
+
+@bot.callback_query_handler(func=lambda call: call.data =='sql_close') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "sql_close": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat disable numbers=5')
+    bot.send_message(call.message.chat.id, '1C доступ закрыт')
+#Открыаем микрот снаружи
+
+@bot.callback_query_handler(func=lambda call: call.data =='micr_open')   #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "micr_open": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall filter disable numbers=2')
+    bot.send_message(call.message.chat.id, 'Микрот открыт снаружи!')
+
+#Закрываем Микрот снаружи
+
+@bot.callback_query_handler(func=lambda call: call.data =='micr_close')   #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "micr_close": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
+        #client.connect(hostname='192.168.1.34', port=2231, username="bka", password=passwd, look_for_keys=False, allow_agent=False)
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False, allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall filter enable numbers=2')
+    bot.send_message(call.message.chat.id, 'Микрот закрыт снаружи!')
+
 
 
 @bot.callback_query_handler(func=lambda call: call.data =='startt')
@@ -149,9 +240,6 @@ def msg_us(message):
     #     bot.send_message(call.message.chat.id, getwiki(call.message.text))
 
 
-@bot.message_handler(commands=['start'])
-def start(message):
-    bot.send_message(message.chat.id, "Пока что бот умеет это:", reply_markup=keyboard)
 
 @bot.message_handler(commands=['ping'])
 def ping(message):
