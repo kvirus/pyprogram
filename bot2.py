@@ -6,7 +6,7 @@ import paramiko
 
 #!!!! Не забудь поменять пароли на скриптах!!!
 
-passwd = "Ja" #Пароль для скриптов!!!
+passwd = "Jac" #Пароль для скриптов!!!
 
 #Активация работы с SSH
 client = paramiko.SSHClient()
@@ -17,15 +17,30 @@ client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 bot = telebot.TeleBot('5800064216:AAFWd0BnsgM9MH94ppPZKU9plisU0L9K_2k') #Запасной бот
 
+#Верхний уровень клавиатуры (выбор раздела)
+
 keyboard_up = types.InlineKeyboardMarkup()
-key_1c = types.InlineKeyboardButton(text='\U0001F609 Открыть/закрыть доступ в 1С \U0001F915', callback_data='1c_rule')
+key_1c = types.InlineKeyboardButton(text='Открыть/закрыть доступ в 1С', callback_data='1c_rule')
+key_mikrot = types.InlineKeyboardButton(text='Открыть/закрыть доступ в Микротик', callback_data='mikrot_rule')
 keyboard_up.add(key_1c)
+keyboard_up.add(key_mikrot)
+
+#Открытие/закрытие правил 1С
 
 keyboard_1c = types.InlineKeyboardMarkup()
-key_sql_open = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
-key_sql_close = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
+key_sql_open = types.InlineKeyboardButton(text='\U0001F7E2 Открыть правило 1C', callback_data='sql_open')
+key_sql_close = types.InlineKeyboardButton(text='\U000026D4 Закрыть правило 1C', callback_data='sql_close')
 keyboard_1c.add(key_sql_open)
 keyboard_1c.add(key_sql_close)
+
+#Правила Микротика
+
+keyboard_mikrot = types.InlineKeyboardMarkup()
+key_micr_open1 = types.InlineKeyboardButton(text='\U0001F7E2 Открыть Микротик снаружи', callback_data='micr_open')
+key_micr_close1 = types.InlineKeyboardButton(text='\U000026D4 Закрыть Микротик снаружи', callback_data='micr_close')
+keyboard_mikrot.add(key_micr_open1)
+keyboard_mikrot.add(key_micr_close1)
+
 
 
 keyboard = types.InlineKeyboardMarkup()
@@ -56,58 +71,35 @@ keyboard.add(key_micr_close)
 # greet_kb.add(button_hi)
 
 
-keyboard1 = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=False, one_time_keyboard=True)
-key_sql_open1 = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
-key_sql_close1 = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
-keyboard1.add(key_sql_open1)
-keyboard1.add(key_sql_close1)
-
-#Функция википедия
-def getwiki(s):
-    try:
-        ny = wikipedia.page(s)
-        # Получаем первую тысячу символов
-        wikitext=ny.content[:1000]
-        # Разделяем по точкам
-        wikimas=wikitext.split('.')
-        # Отбрасываем всЕ после последней точки
-        wikimas = wikimas[:-1]
-        # Создаем пустую переменную для текста
-        wikitext2 = ''
-        # Проходимся по строкам, где нет знаков «равно» (то есть все, кроме заголовков)
-        for x in wikimas:
-            if not('==' in x):
-                    # Если в строке осталось больше трех символов, добавляем ее к нашей переменной и возвращаем утерянные при разделении строк точки на место
-                if(len((x.strip()))>3):
-                   wikitext2=wikitext2+x+'.'
-            else:
-                break
-        # Теперь при помощи регулярных выражений убираем разметку
-        wikitext2=re.sub('\([^()]*\)', '', wikitext2)
-        wikitext2=re.sub('\([^()]*\)', '', wikitext2)
-        wikitext2=re.sub('\{[^\{\}]*\}', '', wikitext2)
-        # Возвращаем текстовую строку
-        return wikitext2
-    # Обрабатываем исключение, которое мог вернуть модуль wikipedia при запросе
-    except Exception as e:
-        return 'В энциклопедии нет информации об этом'
+keyboard1 = types.InlineKeyboardMarkup()
+key_pc_back_open = types.InlineKeyboardButton(text='\U0001F7E2 Открыть доступ на ПК бекап (49900)', callback_data='pc_back_open')
+key_host_basic_open = types.InlineKeyboardButton(text='\U0001F7E2 Открыть на основной хост (49901)', callback_data='host_basic_open')
+key_pc_back_close = types.InlineKeyboardButton(text='\U000026D4 Закрыть доступ на ПК бекап (49900)', callback_data='pc_back_close')
+key_host_basic_close = types.InlineKeyboardButton(text='\U000026D4 Закрыть на основной хост (49901)', callback_data='host_basic_close')
+keyboard1.add(key_pc_back_open)
+keyboard1.add(key_pc_back_close)
+keyboard1.add(key_host_basic_open)
+keyboard1.add(key_host_basic_close)
 
 
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Что будем делать:", reply_markup=keyboard_up)
+    adm = [32949476] #Доступ пользователей
+    if message.chat.id not in adm:
+        bot.send_message(message.chat.id, 'Нефик тут лазить! Уходите!')
+    else:
+        bot.send_message(message.chat.id, "Что будем делать:", reply_markup=keyboard_up)
 
 
 @bot.message_handler(commands=['mikrotik'])
 def start(message):
-    bot.send_message(message.chat.id, "Пока что бот умеет это:", reply_markup=keyboard1)
+    adm = [32949476]  # Доступ пользователей
+    if message.chat.id not in adm:
+        bot.send_message(message.chat.id, 'Нефик тут лазить! Уходите!')
+    else:
+        bot.send_message(message.chat.id, "Правила Микротика:", reply_markup=keyboard1)
 
-
-@bot.message_handler(commands=["wiki"])
-def start(message):
-    bot.send_message(message.chat.id, 'О чем рассказать?')
-    bot.register_next_step_handler(message, info)
 
 def info(message):
     print(message.text)
@@ -118,68 +110,10 @@ def spisok_del(call):
     if call.data == "1c_rule":
         bot.send_message(call.message.chat.id, "Что будем делать:", reply_markup=keyboard_1c)
 
-
-def spisok_wr1(message):
-    file_sp_wr2 = open("c:/intel/1.txt", 'r')
-    len_file = file_sp_wr2.readlines()
-    file_sp_wr2.close()
-    x=0
-    for i in len_file:
-        x=x+1
-        print(i)
-    print('x равно',x)
-    x1 = str(x)
-    print(len_file)
-    lens = str(len(len_file))
-    print(lens)
-    wr = str(message.text)
-    file_sp_wr1 = open("c:/intel/1.txt", 'a')
-    file_sp_wr1.write(x1 + '. ' + wr + "\n")
-    file_sp_wr1.close()
-
-@bot.callback_query_handler(func=lambda call: call.data =='sql_open')#ПАРОЛЬ!!!!
+@bot.callback_query_handler(func=lambda call: call.data =='mikrot_rule')
 def spisok_del(call):
-    if call.data == "sql_open": #Сюда вписать настройки подключения к SQL и открытия правила, сделать для закрытия
-        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
-                       allow_agent=False)
-        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat enable numbers=5')
-    bot.send_message(call.message.chat.id, '1C доступ открыт')
-
-
-@bot.callback_query_handler(func=lambda call: call.data =='spisok_r')
-def callback_worker_r(call):
-    if call.data == "spisok_r":
-        bot.send_message(call.message.chat.id, 'Список такой:')
-        file_sp_wr1 = open("c:/intel/1.txt", 'r')
-        line_wr1 = file_sp_wr1.readlines()
-        # print(line_wr1[2])
-        for i in line_wr1:
-            bot.send_message(call.message.chat.id, i)
-        file_sp_wr1.close()
-
-@bot.callback_query_handler(func=lambda call: call.data =='spisok_del')
-def spisok_del(call):
-    if call.data == "spisok_del":
-        msg2 = bot.send_message(call.message.chat.id, 'Какую строчку удалить?:')
-        bot.register_next_step_handler(msg2, spisok_del)
-
-def spisok_del(message):
-    wr_del = int(message.text)
-    file_sp_del = open("c:/intel/1.txt", 'r+')
-    line_del = file_sp_del.readlines()
-    del line_del[wr_del]
-    file_sp_del.close()
-    os.remove("c:/intel/1.txt")
-    file_sp_new_del = open("c:/intel/1.txt", 'w')
-    for i in line_del:
-            file_sp_new_del.write(i)
-    file_sp_new_del.close()
-
-@bot.callback_query_handler(func=lambda call: call.data =='spisok_clear')
-def spisok_del(call):
-    if call.data == "spisok_clear":
-        open('c:/intel/1.txt', 'w').close()
-    msg2 = bot.send_message(call.message.chat.id, 'Список очищен')
+    if call.data == "mikrot_rule":
+        bot.send_message(call.message.chat.id, "Что будем делать:", reply_markup=keyboard_mikrot)
 
 #Открываем правило SQL
 
@@ -221,133 +155,45 @@ def spisok_del(call):
     bot.send_message(call.message.chat.id, 'Микрот закрыт снаружи!')
 
 
+#Открываем комп бекапа снаружи
 
-@bot.callback_query_handler(func=lambda call: call.data =='startt')
-def callback_worker(call):
-    if call.data == "startt":
-        msg = bot.send_message(call.from_user.id, "Что ищем?")
-        bot.register_next_step_handler(msg,msg_us)
-def msg_us(message):
-    print('1')
-    bot.send_message(message.from_user.id, getwiki(message.text))
+@bot.callback_query_handler(func=lambda call: call.data =='pc_back_open')   #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "pc_back_open":
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat enable numbers=4')
+    bot.send_message(call.message.chat.id, 'ПК бекапа открыт')
 
+#Закрываем комп бекапа снаружи
 
+@bot.callback_query_handler(func=lambda call: call.data =='pc_back_close') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "pc_back_close":
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat disable numbers=4')
+    bot.send_message(call.message.chat.id, 'ПК бекапа закрыт')
 
-    # def get_text_messages(message):
-    #     bot.register_next_step_handler (call,search)
-    # def search(call):
-    #     return
-    #     bot.send_message(call.message.chat.id, getwiki(call.message.text))
+#Открываем основной хост снаружи
 
+@bot.callback_query_handler(func=lambda call: call.data =='host_basic_open')   #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "host_basic_open":
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat enable numbers=6')
+    bot.send_message(call.message.chat.id, 'Хост открыт')
 
+#Закрываем основной хост снаружи
 
-@bot.message_handler(commands=['ping'])
-def ping(message):
-    bot.send_message(message.from_user.id, 'адрес пинга')
-    bot.register_next_step_handler(message, addr)
-def addr(message):
-    z=str(message.text)
-    file = open("c:/intel/1.txt", 'w')
-    for i in z:
-        file.write(i)
-    file.close()
-    file = open("c:/intel/1.txt", 'r')
-    line = str(file.readlines())
-    #pyping('8.8.8.8')
-    print(x)
-        #bot.send_message(message.from_user.id, x)
-    file.close()
-
-    #file = open("c:/intel/1.txt", 'w')
-    #for i in z:
-    #    file.write(i)
-    #file.close()
-
-@bot.message_handler(commands=['spisok_w'])
-def spisok_w(message):
-    bot.send_message(message.from_user.id, 'Запись списка продуктов')
-    bot.register_next_step_handler(message, spisok_wr)
-
-def spisok_wr(message):
-    wr = str(message.text)
-    file_sp_wr = open("c:/intel/1.txt", 'a')
-    file_sp_wr.write(wr + "\n")
-    file_sp_wr.close()
-
-
-@bot.message_handler(commands=['spisok_r'])
-def spisok_r(message):
-    bot.send_message(message.from_user.id, 'Список такой:')
-    file_sp_wr1 = open("c:/intel/1.txt", 'r')
-    line_wr1 = file_sp_wr1.readlines()
-    #print(line_wr1[2])
-    for i in line_wr1:
-        bot.send_message(message.from_user.id, i)
-    file_sp_wr1.close()
-@bot.message_handler(commands=['spisok_del'])
-def spisok_del(message):
-    bot.send_message(message.from_user.id, 'Какую строчку удалить?:')
-    bot.register_next_step_handler(message, spisok_del)
-
-def spisok_del(message):
-    wr_del = int(message.text)
-    file_sp_del = open("c:/intel/1.txt", 'r+')
-    line_del = file_sp_del.readlines()
-    del line_del[wr_del]
-    file_sp_del.close()
-    os.remove("c:/intel/1.txt")
-    file_sp_new_del = open("c:/intel/1.txt", 'w')
-    for i in line_del:
-            file_sp_new_del.write(i)
-   # file_sp_new_del.write(" "+ '\n')
-    #file_sp_new_del.write("\n")
-    file_sp_new_del.close()
-    # file_sp_wr1 = open("c:/intel/1.txt", 'r')
-    # line_wr1 = file_sp_wr1.readlines()
-    # x=int(message.text)
-    # line_wr1.pop(x)
-
-#    bot.register_next_step_handler(message, spisok_r)
-
-# def spisok_wr(message):
-#     wr = str(message.text)
-#     file_sp_wr = open("c:/intel/1.txt", 'r')
-#     for i in file_sp_wr:
-#         print(i)
-#     file_sp_wr.close()
-
-
-
-
-@bot.message_handler(commands=['help'])
-def ping(message):
-    bot.send_message(message.from_user.id, 'Тут всякая фигня')
-
-
-# @bot.message_handler(content_types=['text'])
-# def get_text_messages(message):
-#     if message.text == "Привет":
-#         bot.send_message(message.from_user.id, "Привет, чем я могу тебе помочь?")
-#     elif message.text == "привет":
-#         bot.send_message(message.from_user.id, "привет привет")
-#     elif message.text == "даша":
-#         bot.send_message(message.from_user.id, "мммм любимая :-****")
-#     elif message.text == "Даша":
-#         bot.send_message(message.from_user.id, "мммм любимая :-****")
-#     elif message.text == "2+2":
-#         bot.send_message(message.from_user.id, 2+2)
-#     else:
-#         bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
-
-
-# @bot.message_handler(commands=['command'])
-# def _command_(message):
-#      bot.send_message(message.chat.id, "Введите имя: ")
-#      bot.register_next_step_handler(message, add_user)
-#
-# def add_user(message):
-#     #тут функция записи в бд
-#     pass
+@bot.callback_query_handler(func=lambda call: call.data =='host_basic_close') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "host_basic_close":
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat disable numbers=6')
+    bot.send_message(call.message.chat.id, 'ПК бекапа закрыт')
 
 
 
