@@ -2,6 +2,7 @@ import telebot
 import os, wikipedia, re
 from telebot import types
 import paramiko
+import requests
 #from aiogram.types import ReplyKeyboardRemove,ReplyKeyboardMarkup, KeyboardButton,InlineKeyboardMarkup, InlineKeyboardButton
 
 #!!!! Не забудь поменять пароли на скриптах!!!
