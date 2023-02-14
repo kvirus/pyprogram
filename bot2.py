@@ -1,4 +1,5 @@
 import telebot
+from pythonping import ping
 import os, wikipedia, re
 from telebot import types
 import paramiko
@@ -42,28 +43,38 @@ key_micr_close1 = types.InlineKeyboardButton(text='\U000026D4 Закрыть М�
 keyboard_mikrot.add(key_micr_open1)
 keyboard_mikrot.add(key_micr_close1)
 
+keyboard_ping = types.InlineKeyboardMarkup()
+key_ping_sql = types.InlineKeyboardButton(text='\U0001F7E2 Проверка сервера 1с', callback_data='ping_sql')
+key_ping_term = types.InlineKeyboardButton(text='\U000026D4 Проверка Терминала', callback_data='ping_term')
+key_ping_host_sql = types.InlineKeyboardButton(text='\U000026D4 Проверка хоста SQL', callback_data='ping_host_sql')
+key_ping_host_all = types.InlineKeyboardButton(text='\U000026D4 Проверка общего хоста', callback_data='ping_host_all')
+key_ping_all = types.InlineKeyboardButton(text='\U000026D4 Проверка всех серверов', callback_data='ping_all')
+keyboard_ping.add(key_ping_sql)
+keyboard_ping.add(key_ping_term)
+keyboard_ping.add(key_ping_host_sql)
+keyboard_ping.add(key_ping_host_all)
+keyboard_ping.add(key_ping_all)
 
-
-keyboard = types.InlineKeyboardMarkup()
-key_start = types.InlineKeyboardButton(text='\U0001F609 Википедия \U0001F915', callback_data='startt')
-key_spisok_wr = types.InlineKeyboardButton(text='Добавить в список', callback_data='spisok_wr')
-key_spisok_r = types.InlineKeyboardButton(text='Показать список', callback_data='spisok_r')
-key_spisok_del = types.InlineKeyboardButton(text='Удалить строчку из списка', callback_data='spisok_del')
-key_spisok_clear = types.InlineKeyboardButton(text='Очистить список', callback_data='spisok_clear')
-key_sql_open = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
-key_sql_close = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
-key_micr_open = types.InlineKeyboardButton(text='Открыть Микротик снаружи', callback_data='micr_open')
-key_micr_close = types.InlineKeyboardButton(text='Закрыть Микротик снаружи', callback_data='micr_close')
-
-#keyboard.add(key_start)
-#keyboard.add(key_spisok_wr,key_spisok_r)
-#keyboard.add(key_spisok_del)
-#keyboard.add(key_spisok_clear)
-keyboard.add(key_sql_open)
-keyboard.add(key_sql_close)
-keyboard.add(key_micr_open)
-keyboard.add(key_micr_close)
-#wikipedia.set_lang("ru")
+# keyboard = types.InlineKeyboardMarkup()
+# key_start = types.InlineKeyboardButton(text='\U0001F609 Википедия \U0001F915', callback_data='startt')
+# key_spisok_wr = types.InlineKeyboardButton(text='Добавить в список', callback_data='spisok_wr')
+# key_spisok_r = types.InlineKeyboardButton(text='Показать список', callback_data='spisok_r')
+# key_spisok_del = types.InlineKeyboardButton(text='Удалить строчку из списка', callback_data='spisok_del')
+# key_spisok_clear = types.InlineKeyboardButton(text='Очистить список', callback_data='spisok_clear')
+# key_sql_open = types.InlineKeyboardButton(text='Открыть правило 1C', callback_data='sql_open')
+# key_sql_close = types.InlineKeyboardButton(text='Закрыть правило 1C', callback_data='sql_close')
+# key_micr_open = types.InlineKeyboardButton(text='Открыть Микротик снаружи', callback_data='micr_open')
+# key_micr_close = types.InlineKeyboardButton(text='Закрыть Микротик снаружи', callback_data='micr_close')
+#
+# #keyboard.add(key_start)
+# #keyboard.add(key_spisok_wr,key_spisok_r)
+# #keyboard.add(key_spisok_del)
+# #keyboard.add(key_spisok_clear)
+# keyboard.add(key_sql_open)
+# keyboard.add(key_sql_close)
+# keyboard.add(key_micr_open)
+# keyboard.add(key_micr_close)
+# #wikipedia.set_lang("ru")
 
 #Кнопки клавиатуры
 # button_hi = KeyboardButton('Привет! 👋')
@@ -100,6 +111,16 @@ def start(message):
         bot.send_message(message.chat.id, 'Нефик тут лазить! Уходите!')
     else:
         bot.send_message(message.chat.id, "Правила Микротика:", reply_markup=keyboard1)
+
+@bot.message_handler(commands=['ping'])
+def start(message):
+    adm = [32949476]  # Доступ пользователей
+    if message.chat.id not in adm:
+        bot.send_message(message.chat.id, 'Нефик тут лазить! Уходите!')
+    else:
+        bot.send_message(message.chat.id, "Проверка пинга:", reply_markup=keyboard_ping)
+
+
 
 
 def info(message):
@@ -196,6 +217,63 @@ def spisok_del(call):
         _stdin, _stdout, _stderr = client.exec_command('ip firewall nat disable numbers=6')
     bot.send_message(call.message.chat.id, 'ПК бекапа закрыт')
 
+
+
+#Пинг 1С сервера
+
+@bot.callback_query_handler(func=lambda call: call.data =='ping_sql') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "ping_sql":
+        response_list = ping('10.100.2.32', size=40, count=3)
+        print(response_list.stats_packets_returned)
+    bot.send_message(call.message.chat.id,"Потеряно пакетов")
+    bot.send_message(call.message.chat.id, response_list.packet_loss)
+
+#Пинг Терминала
+
+@bot.callback_query_handler(func=lambda call: call.data =='ping_term') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "ping_term":
+        response_list = ping('10.100.2.145', size=40, count=3)
+        print(response_list)
+    bot.send_message(call.message.chat.id, "Потеряно пакетов")
+    bot.send_message(call.message.chat.id, response_list.packet_loss)
+
+#Пинг  хоста 1С
+
+@bot.callback_query_handler(func=lambda call: call.data =='ping_host_sql') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "ping_host_sql":
+        response_list = ping('10.100.2.31', size=40, count=3)
+        print(response_list)
+    bot.send_message(call.message.chat.id, "Потеряно пакетов")
+    bot.send_message(call.message.chat.id, response_list.packet_loss)
+
+#Пинг общего хоста
+
+@bot.callback_query_handler(func=lambda call: call.data =='ping_host_all') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "ping_host_all":
+        response_list = ping('10.100.2.43', size=40, count=3)
+        print(response_list)
+    bot.send_message(call.message.chat.id, "Потеряно пакетов")
+    bot.send_message(call.message.chat.id, response_list.packet_loss)
+
+#Пинг всех серверов
+
+@bot.callback_query_handler(func=lambda call: call.data =='ping_all') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "ping_all":
+        response_list_1 = ping('192.168.0.2', size=40, count=4)
+        bot.send_message(call.message.chat.id, "Потеряно пакетов сервер 1с - {}".format(response_list_1.stats_packets_lost))
+        response_list_2 = ping('192.168.0.2', size=40, count=4)
+        bot.send_message(call.message.chat.id, "Потеряно пакетов сервер Терминалов - {}".format(response_list_2.stats_packets_lost))
+        response_list_3 = ping('192.168.0.2', size=40, count=4)
+        bot.send_message(call.message.chat.id, "Потеряно пакетов сервер Хост 1с -{}".format(response_list_3.stats_packets_lost))
+        response_list_4 = ping('192.168.0.2', size=40, count=4)
+        bot.send_message(call.message.chat.id, "Потеряно пакетов общий хост - {}".format(response_list_4.stats_packets_lost))
+        response_list_5 = ping('8.8.8.8', size=40, count=4)
+        bot.send_message(call.message.chat.id,"Пинг интернета, потерь - {}".format(response_list_5.stats_packets_lost))
 
 
 bot.polling(none_stop=True)
