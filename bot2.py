@@ -8,16 +8,16 @@ import requests
 
 #!!!! Не забудь поменять пароли на скриптах!!!
 
-passwd = "Jac" #Пароль для скриптов!!!
+passwd = "Jackal.85mm!" #Пароль для скриптов!!!
 
 #Активация работы с SSH
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 #from ping3 import ping
-#bot = telebot.TeleBot('5388668812:AAFiSusMexQ5fO9mkxpUjp20uje-qGJp4ws') #Основной БОТ
+bot = telebot.TeleBot('5388668812:AAFiSusMexQ5fO9mkxpUjp20uje-qGJp4ws') #Основной БОТ
 
-bot = telebot.TeleBot('5800064216:AAFWd0BnsgM9MH94ppPZKU9plisU0L9K_2k') #Запасной бот
+#bot = telebot.TeleBot('5800064216:AAFWd0BnsgM9MH94ppPZKU9plisU0L9K_2k') #Запасной бот
 
 #Верхний уровень клавиатуры (выбор раздела)
 
@@ -264,13 +264,13 @@ def spisok_del(call):
 @bot.callback_query_handler(func=lambda call: call.data =='ping_all') #ПАРОЛЬ!!!!
 def spisok_del(call):
     if call.data == "ping_all":
-        response_list_1 = ping('192.168.0.2', size=40, count=4)
+        response_list_1 = ping('10.100.2.32', size=40, count=4)
         bot.send_message(call.message.chat.id, "Потеряно пакетов сервер 1с - {}".format(response_list_1.stats_packets_lost))
-        response_list_2 = ping('192.168.0.2', size=40, count=4)
+        response_list_2 = ping('10.100.2.145', size=40, count=4)
         bot.send_message(call.message.chat.id, "Потеряно пакетов сервер Терминалов - {}".format(response_list_2.stats_packets_lost))
-        response_list_3 = ping('192.168.0.2', size=40, count=4)
+        response_list_3 = ping('10.100.2.31', size=40, count=4)
         bot.send_message(call.message.chat.id, "Потеряно пакетов сервер Хост 1с -{}".format(response_list_3.stats_packets_lost))
-        response_list_4 = ping('192.168.0.2', size=40, count=4)
+        response_list_4 = ping('10.100.2.43', size=40, count=4)
         bot.send_message(call.message.chat.id, "Потеряно пакетов общий хост - {}".format(response_list_4.stats_packets_lost))
         response_list_5 = ping('8.8.8.8', size=40, count=4)
         bot.send_message(call.message.chat.id,"Пинг интернета, потерь - {}".format(response_list_5.stats_packets_lost))
