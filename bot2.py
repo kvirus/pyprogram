@@ -8,7 +8,7 @@ import requests
 
 #!!!! Не забудь поменять пароли на скриптах!!!
 
-passwd = "Jackal.85mm!" #Пароль для скриптов!!!
+passwd = "Jac" #Пароль для скриптов!!!
 
 #Активация работы с SSH
 client = paramiko.SSHClient()
