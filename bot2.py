@@ -8,7 +8,7 @@ import requests
 
 #!!!! Не забудь поменять пароли на скриптах!!!
 
-passwd = "Jackal.85mm!" #Пароль для скриптов!!!
+passwd = "Jac" #Пароль для скриптов!!!
 
 #Активация работы с SSH
 client = paramiko.SSHClient()
@@ -105,6 +105,14 @@ keyboard1.add(key_aglos_mikr_reboot)
 keyboard1.add(key_aglos_vpn_disable)
 keyboard1.add(key_aglos_vpn_enable)
 
+#Очистка Адрес листов
+keyboard2 = types.InlineKeyboardMarkup()
+key_clear_block = types.InlineKeyboardButton(text='\U0001F7E2 Очистить лист Block1', callback_data='clear_block')
+key_clear_brute = types.InlineKeyboardButton(text='\U0001F7E2 Очистить все листы rdp_brute', callback_data='clear_brute')
+
+keyboard2.add(key_clear_block)
+keyboard2.add(key_clear_brute)
+
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -131,7 +139,14 @@ def start(message):
     else:
         bot.send_message(message.chat.id, "Проверка пинга:", reply_markup=keyboard_ping)
 
-
+#Очистка листа Block1
+@bot.message_handler(commands=['lists'])
+def start(message):
+    adm = [32949476] #Доступ пользователей
+    if message.chat.id not in adm:
+        bot.send_message(message.chat.id, 'Нефик тут лазить! Уходите!')
+    else:
+        bot.send_message(message.chat.id, "Что будем делать:", reply_markup=keyboard2)
 
 
 def info(message):
@@ -269,6 +284,24 @@ def spisok_del(call):
         _stdin, _stdout, _stderr = client.exec_command('interface set [find comment="hotel"] disabled=no')
     bot.send_message(call.message.chat.id, 'OpenVPN включен')
 
+#Очистка адрес листов
+#Очистка адрес листа block1
+@bot.callback_query_handler(func=lambda call: call.data =='clear_block') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "clear_block":
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall address-list remove [find where list="block1"]')
+    bot.send_message(call.message.chat.id, 'Block1 Очищен')
+
+#Очистка адрес листов rdp_bruteforce
+@bot.callback_query_handler(func=lambda call: call.data =='clear_brute') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "clear_brute":
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall address-list remove [find where list~"^rdp_brute"]')
+    bot.send_message(call.message.chat.id, 'Block1 Очищен')
 
 #Пинг 1С сервера
 
