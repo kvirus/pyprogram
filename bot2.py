@@ -8,7 +8,7 @@ import requests
 
 #!!!! Не забудь поменять пароли на скриптах!!!
 
-passwd = "Jac" #Пароль для скриптов!!!
+passwd = "Jackal.85mm!" #Пароль для скриптов!!!
 
 #Активация работы с SSH
 client = paramiko.SSHClient()
@@ -88,11 +88,22 @@ key_pc_back_open = types.InlineKeyboardButton(text='\U0001F7E2 Открыть д
 key_host_basic_open = types.InlineKeyboardButton(text='\U0001F7E2 Открыть на основной хост (49901)', callback_data='host_basic_open')
 key_pc_back_close = types.InlineKeyboardButton(text='\U000026D4 Закрыть доступ на ПК бекап (49900)', callback_data='pc_back_close')
 key_host_basic_close = types.InlineKeyboardButton(text='\U000026D4 Закрыть на основной хост (49901)', callback_data='host_basic_close')
+key_host_mik_reboot = types.InlineKeyboardButton(text='\U0001F6E0 Перезагрузить микротик в гостинице', callback_data='host_mik_reboot')
+key_aglos_mikr_reboot = types.InlineKeyboardButton(text='\U00002692 Перезагрузить микротик в аглос', callback_data='aglos_mikr_reboot')
+key_host_mik_reboot = types.InlineKeyboardButton(text='\U0001F6E0 Перезагрузить микротик в гостинице', callback_data='host_mik_reboot')
+key_aglos_mikr_reboot = types.InlineKeyboardButton(text='\U00002692 Перезагрузить микротик в аглос', callback_data='aglos_mikr_reboot')
+key_aglos_vpn_disable = types.InlineKeyboardButton(text='\U0000274C Выключить OpenVpn Аглос', callback_data='aglos_vpn_disable')
+key_aglos_vpn_enable = types.InlineKeyboardButton(text='\U00002714 Включить OpenVPN аглос', callback_data='aglos_vpn_enable')
+
+
 keyboard1.add(key_pc_back_open)
 keyboard1.add(key_pc_back_close)
 keyboard1.add(key_host_basic_open)
 keyboard1.add(key_host_basic_close)
-
+keyboard1.add(key_host_mik_reboot)
+keyboard1.add(key_aglos_mikr_reboot)
+keyboard1.add(key_aglos_vpn_disable)
+keyboard1.add(key_aglos_vpn_enable)
 
 
 @bot.message_handler(commands=['start'])
@@ -217,6 +228,46 @@ def spisok_del(call):
         _stdin, _stdout, _stderr = client.exec_command('ip firewall nat disable numbers=6')
     bot.send_message(call.message.chat.id, 'ПК бекапа закрыт')
 
+#Перезагрузка Микротиков
+#Гостиница
+@bot.callback_query_handler(func=lambda call: call.data =='host_mik_reboot') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "host_mik_reboot":
+        client.connect(hostname='10.100.2.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat disable numbers=6')
+    bot.send_message(call.message.chat.id, 'Mikrotik на шолохова перезагружен')
+
+#Аглос
+@bot.callback_query_handler(func=lambda call: call.data =='aglos_mikr_reboot') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "aglos_mikr_reboot":
+        client.connect(hostname='10.101.1.1', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('ip firewall nat disable numbers=6')
+    bot.send_message(call.message.chat.id, 'Mikrotik в Аглос перезагружен')
+
+#Выключить/Включить openvpn
+#/interface set [find comment="hotel"] disabled=yes
+#/interface set [find comment="hotel"] disabled=no
+
+@bot.callback_query_handler(func=lambda call: call.data =='aglos_vpn_disable') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    if call.data == "aglos_vpn_disable":
+        client.connect(hostname='94.181.59.14', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('interface set [find comment="hotel"] disabled=yes')
+    bot.send_message(call.message.chat.id, 'OpenVPN выключен')
+
+@bot.callback_query_handler(func=lambda call: call.data =='aglos_vpn_enable') #ПАРОЛЬ!!!!
+def spisok_del(call):
+    print('111')
+    if call.data == "aglos_vpn_enable":
+        print('222')
+        client.connect(hostname='94.181.59.14', port=6666, username="bka", password=passwd, look_for_keys=False,
+                       allow_agent=False)
+        _stdin, _stdout, _stderr = client.exec_command('interface set [find comment="hotel"] disabled=no')
+    bot.send_message(call.message.chat.id, 'OpenVPN включен')
 
 
 #Пинг 1С сервера

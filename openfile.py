@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image
 
-sample = Image.open('h:/1.jpg')
+sample = Image.open('d:/1.png')
 print(type(sample))
 print(sample.size)
 sample.show()
