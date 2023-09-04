@@ -1,0 +1,73 @@
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1069, 702)
+        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.label = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label.setEnabled(True)
+        self.label.setGeometry(QtCore.QRect(350, 10, 281, 51))
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.calendarWidget = QtWidgets.QCalendarWidget(parent=self.centralwidget)
+        self.calendarWidget.setGeometry(QtCore.QRect(300, 120, 331, 261))
+        self.calendarWidget.setObjectName("calendarWidget")
+        self.progressBar = QtWidgets.QProgressBar(parent=self.centralwidget)
+        self.progressBar.setGeometry(QtCore.QRect(10, 610, 1041, 31))
+        self.progressBar.setProperty("value", 24)
+        self.progressBar.setObjectName("progressBar")
+        self.plainTextEdit = QtWidgets.QPlainTextEdit(parent=self.centralwidget)
+        self.plainTextEdit.setGeometry(QtCore.QRect(20, 120, 261, 261))
+        self.plainTextEdit.setObjectName("plainTextEdit")
+        self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(70, 90, 181, 16))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.pushButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(170, 400, 111, 31))
+        self.pushButton.setObjectName("pushButton")
+        self.dateEdit = QtWidgets.QDateEdit(parent=self.centralwidget)
+        self.dateEdit.setGeometry(QtCore.QRect(30, 410, 110, 22))
+        self.dateEdit.setObjectName("dateEdit")
+        self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(180, 550, 711, 41))
+        font = QtGui.QFont()
+        font.setPointSize(26)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1069, 21))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "Тест"))
+        self.label.setText(_translate("MainWindow", "ТРЕКЕР СОБЫТИЙ!!!"))
+        self.label_2.setText(_translate("MainWindow", "Описание события"))
+        self.pushButton.setText(_translate("MainWindow", "Отследить"))
+        self.label_3.setText(_translate("MainWindow", "До наступление события осталось: XX дней"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec())
