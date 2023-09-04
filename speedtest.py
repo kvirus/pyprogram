@@ -27,7 +27,7 @@ def onclick():
     for name in y:
         print(name)
         txt = form.pathEdit.displayText()  # отображение текста в строке
-        dir = txt + '\**\*' + name + "*.bac"  # собираем название файла с путем
+        dir = txt + '\**\*' + name + "*.bak"  # собираем название файла с путем
         print(dir)
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
         print("найденные:", all)
@@ -55,14 +55,15 @@ def podbor():
     # form.calendarWidget.setSelectedDate(QDate(2022, 9, 7))
     x = form.plainTextEdit.toPlainText()
     y = x.split('\n')
-    # print(x.split('\n'))
+    #print(x.split('\n'))
     for name in y:
         print(name)
         txt = form.pathEdit.displayText()  # отображение текста в строке
-        dir = txt + '\**\*' + name + "*.*"  # собираем название файла с путем
+        dir = txt + "\**\*" + name + "*.bak"  # собираем название файла с путем
+        #dir = 'D:\\1C\\scan_Asystem_backup_2023_06_01_000922_3161140.bak'
         print(dir)
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
-        print("найденные:", all)
+        print(all)
         for x in all:
             form.plainTextEdit_2.appendPlainText(x)
 
