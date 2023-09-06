@@ -105,3 +105,10 @@ window.mainloop()
 #print(command3)
 #res = os.system(command3)
 #print("Returned Value: ", res)
+# cd {1} & PsExec \\\{2} -u {3} -p {4} -s {5}
+#
+# 1 путь к расположению PsTools
+# 2 строка из файла с название ПК (пк на который будем ставить)
+# 3 Логин (адин домена)
+# 4 Пароль пользователя
+# 5 Скрипт установки (в нем прописана программа для установки в виде : msiexec.exe /i \\\it15\\tmp\\8.3.22.1709\\1CEnterprise 8.msi /passive /log \\\it15\\tmp\\msi_setup.log)
