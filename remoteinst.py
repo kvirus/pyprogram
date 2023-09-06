@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_RemoteInstall(object):
     def setupUi(self, RemoteInstall):
         RemoteInstall.setObjectName("RemoteInstall")
-        RemoteInstall.resize(981, 590)
+        RemoteInstall.resize(1039, 653)
         self.centralwidget = QtWidgets.QWidget(parent=RemoteInstall)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
@@ -26,6 +26,7 @@ class Ui_RemoteInstall(object):
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit_2 = QtWidgets.QLineEdit(parent=self.centralwidget)
         self.lineEdit_2.setGeometry(QtCore.QRect(700, 130, 231, 31))
+        self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(620, 80, 51, 31))
@@ -104,7 +105,7 @@ class Ui_RemoteInstall(object):
         self.pushButton_4.setObjectName("pushButton_4")
         RemoteInstall.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=RemoteInstall)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 981, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1039, 21))
         self.menubar.setObjectName("menubar")
         RemoteInstall.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=RemoteInstall)

@@ -69,16 +69,20 @@ def scrypt():
 ui.pushButton_4.clicked.connect(scrypt)
 
 def install():
-    pass
     login = ui.lineEdit.displayText() #Берем логин из окна
     passwd = ui.lineEdit_2.displayText() #Берем пароль из окна
-    #цикл выбора названия ПК из файла"!
-    command3 = ("cd {} & PsExec \\\TOYS4 -u {} -p {} -s \\\it15\\tmp\\install.cmd".format(file_path_pstools, login, passwd))
-    #в пути нужно сделать замену слешей с / на \
-    #command3 = ("cd {} & PsExec \\\{} -u {} -p {} -s {}".format(file_path_pstools, !!НАЗВАНИЕ ПК!!, login, passwd, file_scrypt))
-    print(command3)
-    os.system(command3)
-
+    scrs = file_scrypt.replace('/', "\\")  # Заменяем слеши
+    file = open(file_path_pc_names, 'r')
+    while True:
+        line = file.readline()
+        print(line)
+        if not line:
+            break
+        command3 = ("cd {} & PsExec \\\{} -u {} -p {} -s {}".format(file_path_pstools,line.strip() ,login, passwd, scrs))
+        #command3 = ("cd {} & PsExec \\\{} -u {} -p {} -s {}".format(file_path_pstools, !!НАЗВАНИЕ ПК!!, login, passwd, file_scrypt))
+        print(command3)
+        os.system(command3)
+    file.close
 ui.pushButton.clicked.connect(install) #функция установки
 
 
