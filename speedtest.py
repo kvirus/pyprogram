@@ -2,83 +2,66 @@ import os
 import sys
 import glob
 
+from tracker import *
 from PyQt6 import uic, QtWidgets
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import *
 
-Form, Window = uic.loadUiType("tracker.ui")
 
-app = QApplication(sys.argv)
-window = Window()
-form = Form()
-form.setupUi(window)
-window.show()
+app = QtWidgets.QApplication(sys.argv)
+MainWindow = QtWidgets.QMainWindow()
+ui = Ui_MainWindow()
+ui.setupUi(MainWindow)
+MainWindow.show()
 
-def onclick():
-    print(form.plainTextEdit.toPlainText())
-    #print(form.dateEdit.dateTime().toString('dd-MM-yyyy'))
 
-    print("Нажато")
-    #print(form.calendarWidget.selectedDate().toString('dd-MM-yyyy'))
-    #date = QDate(2022, 9, 7)
-    #form.calendarWidget.setSelectedDate(QDate(2022, 9, 7))
-    x = form.plainTextEdit.toPlainText()
+def onclick(): #Кнопка удаления. Подбор файлов и рекурсивное удаление их
+    #print(ui.plainTextEdit.toPlainText())
+    x = ui.plainTextEdit.toPlainText()
     y = x.split('\n')
-    # print(x.split('\n'))
     for name in y:
         print(name)
-        txt = form.pathEdit.displayText()  # отображение текста в строке
+        txt = ui.pathEdit.displayText()  # отображение текста в строке
         dir = txt + '\**\*' + name + "*.bak"  # собираем название файла с путем
         print(dir)
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
         print("найденные:", all)
-        #form.plainTextEdit_2.appendPlainText(all)
         for i in all:
             os.remove(i)
-    #print(x)
-    # r=[]
-    # r.append(x)
-    # print(r)
-    #dir = dir_input + '\**\*' + name + "*.*" #собираем название файла с путем
 
+ui.pushButton.clicked.connect(onclick) #Вызов функции удаления
 
+def path(): #Диалоговое окно вызова директории
+    dialog = QFileDialog()
+    dialog.setFileMode(QFileDialog.FileMode.Directory)
+    dialog.exec()
+    global file_path_pstools
+    file_path_pstools = dialog.selectedFiles()[0]
+    ui.pathEdit.setText(file_path_pstools)
+    print(file_path_pstools)
 
+ui.pushButton5.clicked.connect(path)
 
-form.pushButton.clicked.connect(onclick)
-
-def podbor():
-    #print(form.plainTextEdit.toPlainText())
-    # print(form.dateEdit.dateTime().toString('dd-MM-yyyy'))
-
-    #print("Нажато")
-    # print(form.calendarWidget.selectedDate().toString('dd-MM-yyyy'))
-    # date = QDate(2022, 9, 7)
-    # form.calendarWidget.setSelectedDate(QDate(2022, 9, 7))
-    x = form.plainTextEdit.toPlainText()
+def podbor(): # функция подбора файлов и вывода их в окно
+    x = ui.plainTextEdit.toPlainText() #Получение текста из окна 1
     y = x.split('\n')
-    #print(x.split('\n'))
     for name in y:
         print(name)
-        txt = form.pathEdit.displayText()  # отображение текста в строке
+        txt1 = ui.pathEdit.displayText()  # отображение текста в строке
+        txt = txt1.replace('/', "\\")
         dir = txt + "\**\*" + name + "*.bak"  # собираем название файла с путем
-        #dir = 'D:\\1C\\scan_Asystem_backup_2023_06_01_000922_3161140.bak'
         print(dir)
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
         print(all)
         for x in all:
-            form.plainTextEdit_2.appendPlainText(x)
+            ui.plainTextEdit_2.appendPlainText(x) #помещение текста в окно 2
 
-form.pushButton_2.clicked.connect(podbor)
+ui.pushButton_2.clicked.connect(podbor)
 
 def onclick_cal():
-    print(form.calendarWidget.selectedDate().toString('yyyy_MM_dd'))
-    #form.dateEdit.setDate(form.calendarWidget.selectedDate())
-    #form.calendarWidget.selectedDate()
-    form.plainTextEdit.appendPlainText(form.calendarWidget.selectedDate().toString('yyyy_MM_dd'))
+    print(ui.calendarWidget.selectedDate().toString('yyyy_MM_dd'))
+    ui.plainTextEdit.appendPlainText(ui.calendarWidget.selectedDate().toString('yyyy_MM_dd'))
 
-form.calendarWidget.clicked.connect(onclick_cal)
-# def edittxt():
-#     print("edittext")
+ui.calendarWidget.clicked.connect(onclick_cal)
 
-#form.plainTextEdit.textChanged.connect(edittxt)
 
 sys.exit(app.exec())
