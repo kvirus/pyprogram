@@ -1,13 +1,12 @@
 from googletrans import Translator
 import os
 import sys
-import glob
 from gtts import gTTS
 from playsound import playsound
 
 
 from translat import *
-from PyQt6 import uic, QtWidgets
+from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import *
 import sys
 
@@ -33,7 +32,6 @@ def txt_tr(text='Hello', src='ru',dest='en'):
     try:
         translator = Translator()
         translation = translator.translate(text=text,src=src,dest=dest)
-
         return translation.text
     except Exception as ex:
         return ex
@@ -48,7 +46,7 @@ def onclick(): #Получаем такст из первого окна и по
     # obj = gTTS(text=text_val, lang=language, slow=False)
     # obj.save("C:\Intel\exam.mp3")
     # playsound ('C:/Intel/exam.mp3')
-    if ui.checkBox.isChecked() == True:
+    if ui.checkBox.isChecked() is True:
         try:
             print(ui.textEdit.toPlainText()) #Вывод текста в окне 1
             lng_in = 'en'
@@ -61,7 +59,7 @@ def onclick(): #Получаем такст из первого окна и по
             es =str(ex)
             ui.textEdit_2.append(es)
             return ex
-    if ui.checkBox_2.isChecked() == True:
+    if ui.checkBox_2.isChecked() is True:
         try:
             print(ui.textEdit.toPlainText()) #Вывод текста в окне 1
             lng_in = 'en'
@@ -80,7 +78,7 @@ ui.pushButton.clicked.connect(onclick)
 
 #Озвучка текста со второго окна
 def say():
-    if ui.checkBox.isChecked() == True:
+    if ui.checkBox.isChecked() is True:
         try:
             text_val = ui.textEdit_2.toPlainText()
             print(text_val)
@@ -95,7 +93,7 @@ def say():
             playsound('C:/Intel/exam.mp3')
         except Exception as ex:
             return ex
-    if ui.checkBox_2.isChecked() == True:
+    if ui.checkBox_2.isChecked() is True:
         try:
             text_val = ui.textEdit_2.toPlainText()
             print(text_val)

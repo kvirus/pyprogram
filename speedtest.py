@@ -3,7 +3,7 @@ import sys
 import glob
 
 from tracker import *
-from PyQt6 import uic, QtWidgets
+from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import *
 
 
