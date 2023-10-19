@@ -2,6 +2,7 @@ import os
 import sys
 import glob
 from remoteinst import *
+import multiprocessing as ms
 
 from PyQt6 import uic, QtWidgets
 from PyQt6.QtWidgets import *
@@ -26,11 +27,6 @@ RemoteInstall.show()
 
 #Логин
 
-
-
-
-
-
 def pstools():
     dialog = QFileDialog()
     dialog.setFileMode(QFileDialog.FileMode.Directory)
@@ -41,7 +37,9 @@ def pstools():
     print(file_path_pstools)
 
 
+
 ui.pushButton_2.clicked.connect(pstools)
+
 
 def pc_names():
     dialog = QFileDialog()
@@ -72,9 +70,9 @@ def install():
     login = ui.lineEdit.displayText() #Берем логин из окна
     passwd = ui.lineEdit_2.displayText() #Берем пароль из окна
     scrs = file_scrypt.replace('/', "\\")  # Заменяем слеши
-    file = open(file_path_pc_names, 'r')
+    file = open(file_path_pc_names, 'r')# Открывам файл с именами
     while True:
-        line = file.readline()
+        line = file.readline() #вычитываем строки
         print(line)
         if not line:
             break
@@ -82,7 +80,15 @@ def install():
         #command3 = ("cd {} & PsExec \\\{} -u {} -p {} -s {}".format(file_path_pstools, !!НАЗВАНИЕ ПК!!, login, passwd, file_scrypt))
         print(command3)
         os.system(command3)
+
+
     file.close
+
+def inst():
+    d =ms.Process(target = install)
+    d.start()
+
+#ui.pushButton.clicked.connect(inst)
 ui.pushButton.clicked.connect(install) #функция установки
 
 
