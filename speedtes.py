@@ -1,6 +1,9 @@
 from speed_test import *
 import sys
 import speedtest
+from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtWidgets import *
+
 
 print(1)
 st = speedtest.Speedtest()
