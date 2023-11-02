@@ -38,6 +38,8 @@ sound_ha = pygame.mixer.Sound('C:/g/ha.wav')
 # Создание кортежа изображения курсора
 #cursor_data, cursor_mask = pygame.cursors.compile(cursor_img.get_buffer().raw, black=cursor_img.get_at((0, 0)))
 
+# Создаем кнопку
+button_rect = pygame.Rect(150, 100, 100, 50)
 
 # Установка курсора мыши
 #pygame.mouse.set_cursor((cursor_img.get_width(), cursor_img.get_height()), (0, 0), cursor_data, cursor_mask)
@@ -60,8 +62,17 @@ def game_loop():
         current_image = x
         # обработка нажатий клавиш и выход из игры
         for event in pygame.event.get():
-            image_x=image_x+random.randint(-20,20)
-            image_y=image_y+random.randint(-20,20)
+
+            if 80 < image_x < 760:
+                image_x = image_x + random.randint(-20, 20)
+            else:
+                image_x = image_x + random.randint(0, 0)
+
+            if 80 < image_y < 760:
+                image_y = image_y + random.randint(-20, 20)
+            else:
+                image_y = image_y + random.randint(0, 0)
+
             if event.type == pygame.QUIT:
                 game_over = True
             mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -88,12 +99,12 @@ def game_loop():
                             score_text = font.render(text, True, black)
                             text_rect = score_text.get_rect()
                             text_rect.center =(400,400)
+                            #pygame.draw.rect(window, (255, 0, 0), button_rect)
                             window.blit(score_text,text_rect)
                             pygame.display.flip()
                             while True:
                                 for event in pygame.event.get():
                                     if event.type == pygame.KEYDOWN:
-
                                         pygame.quit()
                                         quit()
             # if event.type == pygame.MOUSEBUTTONDOWN:
@@ -116,7 +127,7 @@ def game_loop():
         font = pygame.font.SysFont(None, 25)
         score_text = font.render("Количество очков: " + str(score), True, black)
         window.blit(score_text, (10, 10))
-        window.blit(image1, (10+score*10, 10))
+        #window.blit(image1, (10+score*10, 10))
 
 
         # обновление экрана
