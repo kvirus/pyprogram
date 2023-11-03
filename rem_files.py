@@ -5,7 +5,7 @@ import glob
 from tracker import *
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import *
-
+from tkinter import messagebox
 
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
@@ -27,6 +27,7 @@ def onclick(): #Кнопка удаления. Подбор файлов и ре
         print("найденные:", all)
         for i in all:
             os.remove(i)
+    messagebox.showinfo("GUI Python", "Файлы удалены")
 
 ui.pushButton.clicked.connect(onclick) #Вызов функции удаления
 
@@ -48,7 +49,7 @@ def podbor(): # функция подбора файлов и вывода их 
         print(name)
         txt1 = ui.pathEdit.displayText()  # отображение текста в строке
         txt = txt1.replace('/', "\\")
-        dir = txt + "\**\*" + name + "*.bak"  # собираем название файла с путем
+        dir = txt1 + "\**\*" + name + "*.bak"  # собираем название файла с путем
         print(dir)
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
         print(all)
