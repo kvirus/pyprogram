@@ -3,6 +3,8 @@ import random
 import time
 import random
 
+
+
 # инициализация pygame
 pygame.init()
 
@@ -31,6 +33,9 @@ image2 = pygame.image.load("C:/g/2.jpg")
 # Загрузка звука
 sound = pygame.mixer.Sound('C:/g/shot.wav')
 sound_ha = pygame.mixer.Sound('C:/g/ha.wav')
+# загрузка mp3 файла
+pygame.mixer.music.load('C:/g/sound.mp3')
+pygame.mixer.music.set_volume(0.2)
 # Загружаем изображение курсора
 #cursor_img = pygame.image.load('C:/g/curs.png').convert_alpha()
 
@@ -49,7 +54,7 @@ pygame.mouse.set_cursor(*pygame.cursors.ball)
 # основной цикл игры
 def game_loop():
     # Установка начальной картинки
-
+    pygame.mixer.music.play()
     game_over = False
     # начальные координаты картинки
     image_x = random.randrange(0, window_width - image.get_width())
@@ -86,16 +91,29 @@ def game_loop():
                         image_x = random.randrange(0, window_width - image.get_width())
                         image_y = random.randrange(0, window_height - image.get_height())
                         x = random.choice([image, image1])
-
+                    if score == 5:
+                        print('очки', score)
+                        font = pygame.font.Font(None, 25)
+                        text1 = "WIN  press any key"
+                        score_text1 = font.render(text1, True, black)
+                        text_rect1 = score_text.get_rect()
+                        text_rect1.center = (400, 400)
+                        window.blit(score_text1, text_rect1)
+                        pygame.display.flip()
+                        while True:
+                            for event in pygame.event.get():
+                                if event.type == pygame.KEYDOWN:
+                                    pygame.quit()
+                                    quit()
             else:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         score -= 1
                         sound_ha.play()
-                        if score == - 1:
+                        if score == - 5:
                             print('game over')
                             font = pygame.font.Font(None, 25)
-                            text = "Game как говорится oveR \n нажмите любую клавишу"
+                            text = "Game как говорится oveR          нажмите любую клавишу"
                             score_text = font.render(text, True, black)
                             text_rect = score_text.get_rect()
                             text_rect.center =(400,400)
@@ -107,6 +125,7 @@ def game_loop():
                                     if event.type == pygame.KEYDOWN:
                                         pygame.quit()
                                         quit()
+
             # if event.type == pygame.MOUSEBUTTONDOWN:
             #     current_image = image2
             #     mouse_x, mouse_y = pygame.mouse.get_pos()
