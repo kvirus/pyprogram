@@ -7,18 +7,21 @@ import schedule
 import time
 
 cfg = cp.ConfigParser()
-cfg.read('cfg.ini')
+cfg.read('C:\cfg.ini')
 
 image_path = cfg['Settings']['img']
 #tim = cfg['Settings']['time']
 tslp = int(cfg['Settings']['tslp'])
 tslp_msec = tslp*1000
 
+
+
 def open():
     app = QApplication(sys.argv)
     screen = app.primaryScreen()
     width, height = screen.size().width(), screen.size().height()
     pixmap = QPixmap(image_path)
+    #pixmap = QPixmap('C:/smokers.jpg')
     scaled_pixmap = pixmap.scaled(width, height)
     # создаем окно
     widget = QWidget()
@@ -35,7 +38,11 @@ def open():
 
 open()
 
-#schedule.every().hour.at(tim).do(open)
+
+
+
+# schedule.every().hour.at(tim).do(open)
+#
 # while True:
 #     schedule.run_pending()
 #     time.sleep(1)
