@@ -13,9 +13,12 @@ player  = pygame.image.load('C:/g/1b.png')
 player_1  = pygame.image.load('C:/g/1b_1.png')
 player1 = pygame.image.load('C:/g/1c.png')
 player2 = pygame.image.load('C:/g/1d.png')
+
 ghost = pygame.image.load('C:/g/ghost.png')
-ghost_min = pygame.transform.scale(ghost,(40,40))
+ghost_min = pygame.transform.scale(ghost,(50,50))
+ghost_min1 = pygame.transform.scale(ghost,(400,40))
 ghost_x = -100
+ghost_list_in_game = []
 
 pygame.mixer.music.load('C:/g/sound.mp3')
 pygame.mixer.music.set_volume(0.2)
@@ -30,46 +33,79 @@ running = True
 
 clock = pygame.time.Clock()
 bg_x = 0
-pygame.mixer.music.play()
+#pygame.mixer.music.play()
 pl_go = 0
+
+ghost_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(ghost_timer, 2)
+
+gameplay = True
+
+label = pygame.font.Font('arial.ttf' , 40)
+lose_label = label.render('Вы проиграли', False, (193,196,198))
+restart_label = label.render('Играть заново', False, (115,132,148))
+restart_label_rect = restart_label.get_rect (topleft = (250,200))
 
 while running:
     bg_up = 0
 
     screen.blit(bg, (bg_x, 0))
-    bg_x += 50 #скорость персонажа
+    bg_x += 10 #скорость бекграунда
     screen.blit(bg, (bg_x-854, 0))
-    screen.blit(ghost_min, (ghost_x, 300))
 
-    player_rect = walk_left[0].get_rect(topleft=(700-pl_go,200 - bg_up))
-    ghost_rect = ghost_min.get_rect(topleft=(ghost_x,250))
+    if gameplay:
 
-    if player_rect.colliderect(ghost_rect):
-        print('game over')
+        #screen.blit(ghost_min, (ghost_x, 300))
+        if ghost_list_in_game:
+            for el in ghost_list_in_game:
+                screen.blit(ghost_min, el)
+                el.x +=50
+                if el.x >= 900:
+                    el.x = -50
+                player_rect = walk_left[0].get_rect(topleft=(700 - pl_go, 200 - bg_up))
+                ghost_rect = ghost_min.get_rect(topleft=(el.x, 250))
+                if player_rect.colliderect(ghost_rect):
+                    gameplay = False
+                    print('game over')
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        player_rect = walk_left[0].get_rect(topleft=(700-pl_go,200 - bg_up))
+        ghost_rect = ghost_min.get_rect(topleft=(-50,250))
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                bg_up += 100
-                pl_go += 130
-    screen.blit(walk_left[player_walk], (700-pl_go , 200 - bg_up))
+        if player_rect.colliderect(ghost_rect):
+            print('game over')
 
-    if pl_go >= 650:
-        pl_go = 0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    bg_up += 100
+                    pl_go += 130
+        screen.blit(walk_left[player_walk], (700-pl_go , 200 - bg_up))
+
+        if pl_go >= 650:
+            pl_go = 0
+        else:
+            pl_go += 10
+        if player_walk == 3:
+            player_walk = 0
+            #time.sleep(0.15)
+        else:
+            player_walk += 1
+            #time.sleep(0.15)
+        if bg_x >= 800:
+            bg_x = 0
     else:
-        pl_go += 10
-    if player_walk == 3:
-        player_walk = 0
-        #time.sleep(0.15)
-    else:
-        player_walk += 1
-        #time.sleep(0.15)
-    if bg_x >= 800:
-        bg_x = 0
+        screen.fill((87,88,89))
+        screen.blit(lose_label, (250,100))
+        screen.blit(restart_label, restart_label_rect)
 
+        mouse = pygame.mouse.get_pos()
+        if restart_label_rect.collidepoint(mouse):
+            gameplay = True
+            pl_go = 855
+            ghost_list_in_game.clear()
 
     pygame.display.update()
 
@@ -77,8 +113,14 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
+        if event.type == ghost_timer:
+            ghost_list_in_game.append(ghost_min.get_rect(topleft = (-50, 300)))
 
-    ghost_x +=30 #скорость приведения
+            # ghost_rect1 = ghost_min1.get_rect(topleft=(ghost_x, 250))
+            # if player_rect.colliderect(ghost_rect1):
+            #     print('game over')
+    #ghost_x += 30
+     #скорость приведения
     if ghost_x >= 900:
         ghost_x = -50
     clock.tick(5)

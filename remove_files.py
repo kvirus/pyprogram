@@ -24,7 +24,8 @@ def clicked():
     file = open("c:/intel/1.txt", 'w')  # открываем файл
     for name in exe_input:
         #dir = dir_input + '\**\*' + name + "*.*" #собираем название файла с путем
-        dir = dir_input + '\**\*' + "*.tmp"  # собираем название файла с путем
+        dir = dir_input + '\**\*' + ".tmp"  # собираем название файла с путем
+        print(dir)
         all = list(glob.glob(dir, recursive=True)) #рекурсивный поиск
         if len(all) == 0:
             messagebox.showinfo("GUI Python", "Ничего не найдено")
@@ -47,7 +48,7 @@ def clicked_del():
     #file = open("c:/intel/1.txt", 'w')  # открываем файл
     for name in exe_input:
         #dir = dir_input + '\**\*' + name + "*.*"  # собираем название файла с путем
-        dir = dir_input + '\**\*' + "*.*"  # собираем название файла с путем
+        dir = dir_input + '\**\*' + "*.tmp"  # собираем название файла с путем
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
         for i in all:
             os.remove(i)
@@ -83,8 +84,8 @@ frame = tkinter.Frame(window)
 frame.grid()
 canvas = tkinter.Canvas(window, height=300, width=300)
 image = Image.open("d:/logo.jpg")
-img = image.resize((300, 300), Image.ANTIALIAS)
-photo = ImageTk.PhotoImage(img)
-img = canvas.create_image(0, 0, anchor='nw',image=photo)
+#img = image.resize((300, 300), Image.ANTIALIAS)
+#photo = ImageTk.PhotoImage(img)
+#img = canvas.create_image(0, 0, anchor='nw',image=photo)
 canvas.grid(row=10,column=1)
 window.mainloop()
