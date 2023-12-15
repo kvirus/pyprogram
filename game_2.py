@@ -14,6 +14,9 @@ player_1  = pygame.image.load('C:/g/1b_1.png')
 player1 = pygame.image.load('C:/g/1c.png')
 player2 = pygame.image.load('C:/g/1d.png')
 
+fire = pygame.image.load('C:/g/fire.png')
+fires = []
+
 ghost = pygame.image.load('C:/g/ghost.png')
 ghost_min = pygame.transform.scale(ghost,(50,50))
 ghost_min1 = pygame.transform.scale(ghost,(400,40))
@@ -45,6 +48,9 @@ label = pygame.font.Font('arial.ttf' , 40)
 lose_label = label.render('Вы проиграли', False, (193,196,198))
 restart_label = label.render('Играть заново', False, (115,132,148))
 restart_label_rect = restart_label.get_rect (topleft = (250,200))
+
+
+
 
 while running:
     bg_up = 0
@@ -82,6 +88,9 @@ while running:
                 if event.key == pygame.K_UP:
                     bg_up += 100
                     pl_go += 130
+                if event.type == pygame.K_b:
+                    fires.append(fire.get_rect(topleft=(650-pl_go,200 - bg_up)))
+                    screen.blit(fire, (650-pl_go,200 - bg_up))
         screen.blit(walk_left[player_walk], (700-pl_go , 200 - bg_up))
 
         if pl_go >= 650:
@@ -96,13 +105,15 @@ while running:
             #time.sleep(0.15)
         if bg_x >= 800:
             bg_x = 0
+
+
     else:
         screen.fill((87,88,89))
         screen.blit(lose_label, (250,100))
         screen.blit(restart_label, restart_label_rect)
 
         mouse = pygame.mouse.get_pos()
-        if restart_label_rect.collidepoint(mouse):
+        if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed()[0]:
             gameplay = True
             pl_go = 855
             ghost_list_in_game.clear()
