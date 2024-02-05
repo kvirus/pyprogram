@@ -310,7 +310,7 @@ def spisok_del(call):
 @bot.callback_query_handler(func=lambda call: call.data =='ping_sql') #ПАРОЛЬ!!!!
 def spisok_del(call):
     if call.data == "ping_sql":
-        response_list = ping('10.100.2.32', size=40, count=3)
+        response_list = ping('10.100.2.72', size=40, count=3)
         print(response_list.stats_packets_returned)
     bot.send_message(call.message.chat.id,"Потеряно пакетов")
     bot.send_message(call.message.chat.id, response_list.packet_loss)
