@@ -1,6 +1,9 @@
 import pygame
 import random
 import os
+import sys
+
+
 pygame.init()
 
 # Размеры экрана
@@ -56,6 +59,8 @@ def ansver():
     choices = [asklater,bedpersp,dontknow,goodschance,itstak,manysomn,maybe,no,nottake,nowno,ofcourse,smallshance,startssayno,tobe,yeees,yes,yesofcour]
     return random.choice(choices)
 
+
+
 def game_loop():
     screen.blit(back, (0, 0))
     running = True
@@ -69,7 +74,6 @@ def game_loop():
                     #ansver1 = ansver()
                     ansver1 = ans2()
                     screen.blit(ansver1, (260, 240))
-                    print("1")
         pygame.display.flip()
     pygame.display.flip()
 
