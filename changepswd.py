@@ -143,4 +143,4 @@ if __name__ == "__main__":
     RemoteInstall.show()
     sys.exit(app.exec())
 
-#PsExec \\nb-it06 -u pp\bka -p J -s net user it_dep
+#PsExec \\nb-it06 -u pp\bka -p J -s net user it_dep passwd
