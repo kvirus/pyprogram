@@ -128,7 +128,7 @@ class Ui_RemoteInstall(object):
         self.label_7.setText(_translate("RemoteInstall", "msiexec.exe /i \"\\it15tmp8.3.22.22391CEnterprise 8.msi\" /passive /log \"\\it15tmpmsi_setup.log\"\n"
 ""))
         self.label_8.setText(_translate("RemoteInstall", "Файлы с именами ПК должны находится на сетевой папке, так же как и программа и скрипт установки"))
-        self.label_9.setText(_translate("RemoteInstall", "Путь к файлу скрипта")) #Скрипт должен быть "вида net user it_dep it*161pp18!"
+        self.label_9.setText(_translate("RemoteInstall", "Путь к файлу скрипта")) #Скрипт должен быть "вида net user it_dep passwd
         self.pushButton_2.setText(_translate("RemoteInstall", "выбрать"))
         self.pushButton_3.setText(_translate("RemoteInstall", "выбрать"))
         self.pushButton_4.setText(_translate("RemoteInstall", "выбрать"))
