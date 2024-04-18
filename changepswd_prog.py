@@ -54,7 +54,7 @@ def pc_names():
 
 ui.pushButton_3.clicked.connect(pc_names)
 
-def save_log(parent=None):
+def save_log():
     dialog = QFileDialog()
     dialog.setFileMode(QFileDialog.FileMode.AnyFile)
     dialog.exec()
