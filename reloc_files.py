@@ -21,7 +21,7 @@ def onclick(): #Кнопка удаления. Подбор файлов и ре
     y = x.split('\n')
     z = ui.pathEdit_2.displayText()
     for name in y:
-        print(name)
+        #print(name)
         txt = ui.pathEdit.displayText()  # отображение текста в строке
         dir = txt + '\**\*' + name + "*.bak"  # собираем название файла с путем
         print(dir)
@@ -29,14 +29,14 @@ def onclick(): #Кнопка удаления. Подбор файлов и ре
         print(all)
         #тут нужно получить путь куда переносить
         for i in all:
-            only_folder = os.path.dirname(all[0])  # забираем директорию без названия файла
+            only_folder = os.path.dirname(i)  # забираем директорию без названия файла
             only_last_folder = os.path.basename(only_folder)  # забираем директорию
             print('только каталог последний:', only_last_folder)
             z1 = z + '\\' + only_last_folder  # Собираем каталог для проверки существования
-            print("путь куда", z1)
-            print(i)
+            #print("путь куда", z1)
+            #print(i)
             file_name = os.path.basename(i)
-            print("Имя файла", file_name)
+            #print("Имя файла", file_name)
             end_file = z1 + '\\' + file_name
             print('элемент', i)
             print('куда перенести',end_file)
@@ -108,15 +108,16 @@ def podbor(): # функция подбора файлов и вывода их 
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
         #print('Все', all)
         #print('txt_all', all[0])
-        only_folder= os.path.dirname(all[0]) #забираем директорию без названия файла
-        only_last_folder = os.path.basename(only_folder) #забираем директорию
-        #print('только каталог последний:', only_last_folder)
-        z1 = z + '/'+ only_last_folder #Собираем каталог для проверки существования
-        #print('каталог для проверки', z1)
-        if not os.path.exists(z1):
-            os.makedirs(z1)
-        else:
-            print("Каталог", z1, "уже существует")
+        for i in all:
+            only_folder= os.path.dirname(i) #забираем директорию без названия файла
+            only_last_folder = os.path.basename(only_folder) #забираем директорию
+            #print('только каталог последний:', only_last_folder)
+            z1 = z + '/'+ only_last_folder #Собираем каталог для проверки существования
+            #print('каталог для проверки', z1)
+            if not os.path.exists(z1):
+                os.makedirs(z1)
+            else:
+                print("Каталог", z1, "уже существует")
 
         for x in all:
             ui.plainTextEdit_2.appendPlainText(x) #помещение текста в окно 2
