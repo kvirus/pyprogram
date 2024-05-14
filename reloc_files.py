@@ -1,6 +1,7 @@
 import os
 import sys
 import glob
+import threading
 
 import shutil
 from tracker_reloc import *
@@ -15,6 +16,11 @@ ui.setupUi(MainWindow)
 MainWindow.show()
 
 
+# def loging():
+#     ui.plainTextEdit_3.appendPlainText(end_file)  # Логирование
+
+
+
 def onclick(): #Кнопка удаления. Подбор файлов и рекурсивное удаление их
     #print(ui.plainTextEdit.toPlainText())
     x = ui.plainTextEdit.toPlainText()
@@ -24,22 +30,23 @@ def onclick(): #Кнопка удаления. Подбор файлов и ре
         #print(name)
         txt = ui.pathEdit.displayText()  # отображение текста в строке
         dir = txt + '\**\*' + name + "*.bak"  # собираем название файла с путем
-        print(dir)
+        #print(dir)
         all = list(glob.glob(dir, recursive=True))  # рекурсивный поиск
-        print(all)
+        #print(all)
         #тут нужно получить путь куда переносить
         for i in all:
             only_folder = os.path.dirname(i)  # забираем директорию без названия файла
             only_last_folder = os.path.basename(only_folder)  # забираем директорию
-            print('только каталог последний:', only_last_folder)
+            #print('только каталог последний:', only_last_folder)
             z1 = z + '\\' + only_last_folder  # Собираем каталог для проверки существования
             #print("путь куда", z1)
             #print(i)
             file_name = os.path.basename(i)
             #print("Имя файла", file_name)
             end_file = z1 + '\\' + file_name
-            print('элемент', i)
-            print('куда перенести',end_file)
+            #print('элемент', i)
+            print('Сейчас копируется:',end_file)
+            ui.plainTextEdit_3.appendPlainText(end_file) #Логирование
             try:
                 #os.rename(i, end_file)
                 shutil.move(i, end_file)
@@ -48,7 +55,10 @@ def onclick(): #Кнопка удаления. Подбор файлов и ре
 
     messagebox.showinfo("GUI Python", "Файлы перенесены")
 
-ui.pushButton.clicked.connect(onclick) #Вызов функции удаления
+#ui.pushButton.clicked.connect(onclick) #Вызов функции удаления
+background_thread = threading.Thread(target=onclick)
+ui.pushButton.clicked.connect(background_thread.start)
+
 
 def path(): #Диалоговое окно вызова директории
     dialog = QFileDialog()
@@ -129,6 +139,7 @@ def onclick_cal():
     ui.plainTextEdit.appendPlainText(ui.calendarWidget.selectedDate().toString('yyyy_MM_dd'))
 
 ui.calendarWidget.clicked.connect(onclick_cal)
+
 
 
 sys.exit(app.exec())
