@@ -3,7 +3,10 @@ import sys
 import glob
 import threading
 
+import pyautogui as py
 import shutil
+import time
+
 from tracker_reloc import *
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import *
@@ -19,6 +22,10 @@ MainWindow.show()
 # def loging():
 #     ui.plainTextEdit_3.appendPlainText(end_file)  # Логирование
 
+def show_message(name):
+    res = py.confirm(text='Идет перенос файла' + name,buttons=['Хорошо', 'Неплохо'], timeout=2000)
+    print(res)
+
 
 
 def onclick(): #Кнопка удаления. Подбор файлов и рекурсивное удаление их
@@ -26,6 +33,9 @@ def onclick(): #Кнопка удаления. Подбор файлов и ре
     x = ui.plainTextEdit.toPlainText()
     y = x.split('\n')
     z = ui.pathEdit_2.displayText()
+
+
+
     for name in y:
         #print(name)
         txt = ui.pathEdit.displayText()  # отображение текста в строке
@@ -46,18 +56,20 @@ def onclick(): #Кнопка удаления. Подбор файлов и ре
             end_file = z1 + '\\' + file_name
             #print('элемент', i)
             print('Сейчас копируется:',end_file)
-            ui.plainTextEdit_3.appendPlainText(end_file) #Логирование
-            try:
+            #ui.plainTextEdit_3.appendPlainText(end_file) #Логирование
+            #try:
                 #os.rename(i, end_file)
-                shutil.move(i, end_file)
-            except Exception as exc:
-                print(exc)
+            #ui.plainTextEdit_3.appendPlainText(end_file)  # Логирование
+            show_message(end_file)
+            shutil.move(i, end_file)
+            #except Exception as exc:
+            #    print(exc)
 
     messagebox.showinfo("GUI Python", "Файлы перенесены")
 
-#ui.pushButton.clicked.connect(onclick) #Вызов функции удаления
-background_thread = threading.Thread(target=onclick)
-ui.pushButton.clicked.connect(background_thread.start)
+ui.pushButton.clicked.connect(onclick) #Вызов функции удаления
+# background_thread = threading.Thread(target=onclick) # Что то выдает ошибку приложения
+# ui.pushButton.clicked.connect(background_thread.start)
 
 
 def path(): #Диалоговое окно вызова директории
@@ -140,6 +152,24 @@ def onclick_cal():
 
 ui.calendarWidget.clicked.connect(onclick_cal)
 
+def clear_date():
+    #ui.plainTextEdit_3.appendPlainText(end_file)
+    ui.plainTextEdit.clear()
+
+ui.pushButton_8.clicked.connect(clear_date)
+
+
+def clear_files():
+    # ui.plainTextEdit_3.appendPlainText(end_file)
+    ui.plainTextEdit_2.clear()
+
+ui.pushButton_6.clicked.connect(clear_files)
+
+def clear_log():
+    # ui.plainTextEdit_3.appendPlainText(end_file)
+    ui.plainTextEdit_3.clear()
+
+ui.pushButton_5.clicked.connect(clear_log)
 
 
 sys.exit(app.exec())
