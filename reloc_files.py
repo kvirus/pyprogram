@@ -1,11 +1,12 @@
 import os
 import sys
 import glob
-import threading
+#import threading
 
-import pyautogui as py
+#import pyautogui as py
+from pyautogui import confirm
 import shutil
-import time
+#import time
 
 from tracker_reloc import *
 from PyQt6 import QtWidgets
@@ -23,7 +24,7 @@ MainWindow.show()
 #     ui.plainTextEdit_3.appendPlainText(end_file)  # Логирование
 
 def show_message(name):
-    res = py.confirm(text='Идет перенос файла' + name,buttons=['Хорошо', 'Неплохо'], timeout=2000)
+    res = confirm(text='Идет перенос файла' + name,buttons=['Хорошо', 'Неплохо'], timeout=2000)
     print(res)
 
 
