@@ -4,10 +4,10 @@ import openai
 
 # Установите свой токен от BotFather
 #TELEGRAM_TOKEN = "5800064216:AAFWd0BnsgM9MH94ppPZKU9plisU0L9K_2k"
-TELEGRAM_TOKEN = "6904162090:AAGH0esfBzEYJbXZQsQQTZwDUQr1KD3XFkc"
+TELEGRAM_TOKEN = ""
 
 # Установите свой API-ключ от OpenAI
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = ""
 openai.api_key = OPENAI_API_KEY
 
 ALLOWED_CHAT_IDS = [32949476, 987654321]
