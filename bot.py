@@ -13,9 +13,9 @@ client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 #from ping3 import ping
-bot = telebot.TeleBot('5388668812:AAFiSusMexQ5fO9mkxpUjp20uje-qGJp4ws') #Основной БОТ
+bot = telebot.TeleBot('') #Основной БОТ
 
-#bot = telebot.TeleBot('5800064216:AAFWd0BnsgM9MH94ppPZKU9plisU0L9K_2k') #Запасной бот
+#bot = telebot.TeleBot('') #Запасной бот
 
 keyboard = types.InlineKeyboardMarkup()
 key_start = types.InlineKeyboardButton(text='\U0001F609 Википедия \U0001F915', callback_data='startt')
