@@ -9,7 +9,7 @@ from tkinter import scrolledtext
 #os.system(reboot)
 #input("Нажмите ЕНТЕР",)
 
-def reboot_click(): #21334234
+def reboot_click():
     pc_name = list(map(str, pc_name_win.get().split(" ")))  # получение название файла для удаления, через пробел
     if len(pc_name_win.get()) == 0:
         messagebox.showinfo("GUI Python", "Введите название ПК")
