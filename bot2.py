@@ -10,16 +10,16 @@ import requests
 
 #!!!! Не забудь поменять пароли на скриптах!!!
 
-passwd = "Jac" #Пароль для скриптов!!!
+passwd = "Ja" #Пароль для скриптов!!!
 
 #Активация работы с SSH
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 #from ping3 import ping
-bot = telebot.TeleBot('') #Основной БОТ
+#bot = telebot.TeleBot('') #Основной БОТ
 
-#bot = telebot.TeleBot('') #Запасной бот
+bot = telebot.TeleBot('580') #Запасной бот
 
 #Верхний уровень клавиатуры (выбор раздела)
 
