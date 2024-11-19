@@ -12,6 +12,7 @@ import requests
 
 passwd = "Ja" #Пароль для скриптов!!!
 
+
 #Активация работы с SSH
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
