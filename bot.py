@@ -6,7 +6,7 @@ import paramiko
 
 #!!!! Не забудь поменять пароли на скриптах!!!
 
-passwd = "Ja" #Пароль для скриптов!!!
+passwd = "J" #Пароль для скриптов!!!
 
 #Активация работы с SSH
 client = paramiko.SSHClient()
